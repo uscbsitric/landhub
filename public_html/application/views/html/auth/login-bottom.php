@@ -1,0 +1,1 @@
+<a href="/forgot-password"><i class="icon-lock"></i> Forgot your password?</a>
