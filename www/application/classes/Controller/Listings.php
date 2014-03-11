@@ -24,10 +24,10 @@ class Controller_Listings extends Lsp_Controller_Template
 	{
 		$states = ORM::factory('State')->find_all();
 		$propertyID = $this->request->param('id');
-		$property = ORM::factory('Property')->where('id', '=', $propertyID)->find();
+		//$property = ORM::factory('Property')->where('id', '=', $propertyID)->find();
 
 		$this->template->content = View::factory('html/listings/new')->set('states', $states)
-																	 ->set('property', $property);
+																	 ->set('propertyID', $propertyID);
 	}
 	
 	public function action_craigslist()
@@ -41,7 +41,17 @@ class Controller_Listings extends Lsp_Controller_Template
 	
 	public function action_craigslistpreview()
 	{
-		$this->template->content = View::factory('html/listings/craigslistpreview')->set('craiglistPostDetails', 'craiglistPostDetails');
+		$postVariables = $this->request->post();
+		$property	   = ORM::factory('Property')->where('id', '=', $postVariables['propertyID'])->find();
+		$state		   = ORM::factory('State')->where('abbreviation', '=', $postVariables['state'])->find();
+		$city		   = ORM::factory('City')->where('id', '=', $postVariables['city'])->find();
+		$propertyPhoto = ORM::factory('Property_Photo')->where('property_id', '=', $property->id)->find();
+		$otherDetails  = array();
+		$otherDetails['state'] = $state->name;
+		$otherDetails['city']  = $city->name;
+		$otherDetails['propertyPhoto'] = $propertyPhoto;
+		$this->template->content = View::factory('html/listings/craigslistpreview')->set('property', $property)
+																				   ->set('otherDetails', $otherDetails);
 	}
 	
 	public function action_youtube()

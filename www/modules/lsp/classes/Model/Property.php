@@ -4,23 +4,18 @@ class Model_Property extends ORM
 {
     protected $_table_name = 'properties';
 
-    protected $_belongs_to = array(
-        'user' => array(
-            'model' => 'User',
-            'foreign_key' => 'user_id',
-        ),
-        'property_type' => array(
-            'model' => 'Property_Type',
-            'foreign_key' => 'property_type_id',
-        )
-    );
+    protected $_belongs_to = array('user' => array('model' 		 => 'User',
+            									   'foreign_key' => 'user_id',
+        										  ),
+							       'property_type' => array('model' 	  => 'Property_Type',
+							            				    'foreign_key' => 'property_type_id',
+							        					   )
+    							  );
 
-    protected $_has_many = array(
-        'photos' => array(
-            'model' => 'Property_Photo',
-            'foreign_key' => 'property_id',
-        ),
-    );
+    protected $_has_many = array('photos' => array('model' 		 => 'Property_Photo',
+            									   'foreign_key' => 'property_id',
+        										  )
+    							);
 
     public function rules()
     {

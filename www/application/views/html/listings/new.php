@@ -11,6 +11,7 @@
             </div>
             <div class="box-content">
             	<form class="form form-horizontal" method="post" enctype="multipart/form-data" action="/listings/craigslistpreview">
+            	<input type="hidden" name="propertyID" value="<?php echo $propertyID; ?>">
             		<h3>Listings Options</h3>
                     <br>
                     <div class="form-group">
