@@ -49,9 +49,21 @@ class Controller_Listings extends Lsp_Controller_Template
 		$otherDetails  = array();
 		$otherDetails['state'] = $state->name;
 		$otherDetails['city']  = $city->name;
+		$otherDetails['cityID']= $city->id;
 		$otherDetails['propertyPhoto'] = $propertyPhoto;
 		$this->template->content = View::factory('html/listings/craigslistpreview')->set('property', $property)
 																				   ->set('otherDetails', $otherDetails);
+	}
+	
+	public function action_craigslistpost()
+	{
+		$postVariables = $this->request->post();
+		$listingsModel = ORM::factory('Listing');
+		$listingsModel->postToCraigslist($postVariables);
+
+		$this->template->content = View::factory('html/listings/craigslistpost');
+		//$craigslistHandler = ORM::factory('Listings_CraigsListsHandler');
+		//$craigslistHandler->postToCraigsList($postVariables['propertyID']);
 	}
 	
 	public function action_youtube()

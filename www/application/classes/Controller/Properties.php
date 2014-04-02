@@ -4,6 +4,7 @@ class Controller_Properties extends Lsp_Controller_Template
 {
     public $template = 'templates/default';
 
+
     public function action_index()
     {
         $list = ORM::factory('Property')
@@ -13,6 +14,7 @@ class Controller_Properties extends Lsp_Controller_Template
         $this->template->content = View::factory('html/properties/list')
             ->set('list', $list);
     }
+
 
     public function action_new()
     {
@@ -90,6 +92,7 @@ class Controller_Properties extends Lsp_Controller_Template
             ->set('property_types', $property_types)
             ->set('errors', $errors);
     }
+
 
     public function action_edit()
     {
@@ -186,6 +189,7 @@ class Controller_Properties extends Lsp_Controller_Template
             ->set('errors', $errors);
     }
 
+
     public function action_archive()
     {
         $id = $this->request->param('id');
@@ -201,6 +205,7 @@ class Controller_Properties extends Lsp_Controller_Template
         $this->redirect('/properties');
         exit();
     }
+
 
     public function action_activate()
     {
@@ -218,10 +223,11 @@ class Controller_Properties extends Lsp_Controller_Template
         exit();
     }
 
-    /*Author: Frederick Sandalo
+
+    /**Author: Frederick Sandalo
      * Method: action_migrate
      * Purpose: migrates database table data from rural_rural.
-     *   */
+     **/
 	public function action_migrate()
 	{
 		$dbName = 'data_synd_platform';
@@ -306,9 +312,8 @@ class Controller_Properties extends Lsp_Controller_Template
 		$this->template->content = View::factory('html/properties/migrate')
 										 ->set('migrationMessage', 'Migration of rural_rural.items to data_synd_platform and rural_rural.photos to data_synd_platform.property_photos complete');
 	}
-	
-	
-	
+
+
 	function transferSourceTableToTargetTable($dbname, $targetColumns = null, $sourceColumns = null, $targetTable, $sourceTable)
 	{
 		$this->changeFromNullToEmptyString($sourceColumns, $sourceTable);
@@ -325,12 +330,13 @@ class Controller_Properties extends Lsp_Controller_Template
 		DB::query(null, $query)->execute();
 	}
 
+
 	function appendUploadsDirPath($dbname, $imagePathColumn, $imageUploadPath, $tableName)
 	{
 		$query = 'UPDATE '.$tableName.' set '.$imagePathColumn.' = CONCAT("'.$imageUploadPath.'", url)';
 		$queryResult = DB::query(Database::UPDATE, $query)->execute();
 	}
-	
+
 
 	function changeFromNullToEmptyString($sourceColumns, $sourceTable)
 	{
@@ -343,8 +349,8 @@ class Controller_Properties extends Lsp_Controller_Template
 			$queryResult = DB::query(Database::UPDATE, $query)->execute();
 		}
 	}
-	
-	
+
+
 	function getPropertiesTableColumns()
 	{
 		// since the target table 'data_synd_platform.properties' has more columns than subject table 'rural_rural.items', they dont get matched up automatically,
@@ -358,7 +364,8 @@ class Controller_Properties extends Lsp_Controller_Template
 
 		return $targetColumns;
 	}
-	
+
+
 	function getSourceTableColumns($dbname, $tablename)
 	{
 		$query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS  WHERE TABLE_SCHEMA='$dbname' AND TABLE_NAME= '$tablename' ";
@@ -373,6 +380,7 @@ class Controller_Properties extends Lsp_Controller_Template
 
 		return $sourceColumns;
 	}
+
 
 	function getPropertyPhotosTableColumns($dbname)
 	{
@@ -392,6 +400,7 @@ class Controller_Properties extends Lsp_Controller_Template
 		
 		return $targetColumns;
 	}
+
 
 	public function action_hashThePasswords()
 	{

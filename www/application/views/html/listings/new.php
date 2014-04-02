@@ -1,4 +1,3 @@
-
 <div class="row" style="margin-top:32px;">
     <div class="col-sm-12">
         <div class="box">
@@ -38,7 +37,7 @@
                     <div class="form-actions form-actions-padding-sm">
                         <div class="row">
                             <div class="col-md-10 col-md-offset-2">
-                                <button type="submit" name="submit" class="btn btn-primary" type="submit">
+                                <button type="submit" name="submit" id="submit" class="btn btn-primary" type="submit" disabled>
                                     <i class="icon-save"></i>
                                     Submit
                                 </button>
@@ -68,6 +67,7 @@
 					 			 		 }
 					 			  );
 				 			$('#city').removeAttr('disabled');
+				 			$('#submit').removeAttr('disabled');
 					 	 }
 			   }
 			  );
@@ -79,5 +79,5 @@
 		  						getCitiesBasedOnSelectedState($('#state').val());
 		  					  }
 			      );
-	
+
 </script>
