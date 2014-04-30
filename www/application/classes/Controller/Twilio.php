@@ -4,7 +4,8 @@ defined('SYSPATH') or die('No direct script access.');
 class Controller_Twilio extends Controller_Template
 {
 	public $template = 'templates/twilio';
-	
+
+
 	public function action_craigslistland()
 	{
 	}
@@ -45,6 +46,12 @@ class Controller_Twilio extends Controller_Template
 
 		$twilioModel = ORM::factory('Twilio')->values(array('debug_message' => $debugMessage), array('debug_message'));
 		$twilioModel->save();
+		
+		preg_match_all('/\s[0-9]{3,5}\s/', $debugMessage, $result);
+		$verificationCode = trim($result[0][0], ' ');
+		
+		$listingsModel = ORM::factory('Listing');
+		$listingsModel->postToCraigslistPart2($verificationCode);
 
 	}
 

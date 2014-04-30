@@ -41,6 +41,8 @@ class Model_Listings_CraigsListsHandler extends Model
 	private $n3;
 	private $callType;
 	private $callLang;
+	
+	private $imapHandler;
 
 
 	public function __construct($configuration)
@@ -174,12 +176,11 @@ class Model_Listings_CraigsListsHandler extends Model
 	}
 
 
-	public function postToCraigsList($propery, $city, $debug)
+	public function post($debug, $stepsAndConfiguration)
 	{
-		$stepCounter = 0; // login step
-		$stepsAndConfiguration = $this->variantAAssembler($propery, $city);
+		$stepCounter = 0;
 		$keys = array_keys($stepsAndConfiguration);
-	
+		
 		foreach($stepsAndConfiguration as $step => &$configuration)
 		{
 			if($configuration['configuration']['formatURL'])
@@ -187,27 +188,27 @@ class Model_Listings_CraigsListsHandler extends Model
 				$url = sprintf($configuration['configuration']['CURLOPT_URL'], $configuration['postVars']['random22'], $configuration['postVars']['random5']);
 				$configuration['configuration']['CURLOPT_URL'] = $url;
 			}
-	
+		
 			if( isset($configuration['configuration']['formatReferer']) && true == $configuration['configuration']['formatReferer'] )
 			{
 				$referer = sprintf($configuration['configuration']['CURLOPT_REFERER'], $configuration['postVars']['random22'], $configuration['postVars']['random5']);
 				$configuration['configuration']['CURLOPT_REFERER'] = $referer;
 			}
-	
+		
 			$curlRequestResult = $this->cURLRequest($configuration['configuration'], $configuration['postVars']);
-	
+		
 			if($debug && $curlRequestResult)
 			{
-				echo "<br>";
+				echo "Newest Test Edition<br>";
 				echo $step;
 				echo "<br>";
 				echo '<div id="loginResult" style="width: 800; height: 900; overflow: hidden;">
 							'.$curlRequestResult['markup'].'
 						  </div>';
 			}
-	
+		
 			$stepCounter++;
-	
+		
 			if(isset($keys[$stepCounter]))
 			{
 				if($curlRequestResult['random22'] || $curlRequestResult['random5'] || $curlRequestResult['cryptedStepCheck'])
@@ -218,9 +219,61 @@ class Model_Listings_CraigsListsHandler extends Model
 				}
 			}
 		}
+		
+		$error = false;
+
+		return array('error' 			=> $error,
+					 'random22' 		=> $curlRequestResult['random22'],
+					 'random5'			=> $curlRequestResult['random5'],
+					 'cryptedStepCheck' => $curlRequestResult['cryptedStepCheck']
+					);
+	}
+
+
+	// review this function and variables that are not needed
+	public function postToCraigsListPart1($property, $city, $userId, $debug)
+	{		
+		// delete all emails first
+		$userModel = ORM::factory('User')->where('id', '=', $userId)->find();
+		$this->imapHandler = ORM::factory('IMAPHandler');
+		
+		$this->imapHandler->configure($userModel->email_craigslist_username, $userModel->email_craigslist_password, 'google');
+
+		$deleteResult = $this->imapHandler->deleteAllEmails();
+
+		if($deleteResult)
+		{
+			// first part posting
+			$stepsAndConfiguration = $this->variantAAssemblerPart1($property, $city);
+			$this->post($debug, $stepsAndConfiguration);
+			
+			// second part posting
+			$stepsAndConfiguration = $this->variantAAssemblerPart2($property, $city);
+			$postingResults = $this->post($debug, $stepsAndConfiguration);
+
+			$craigslistUrlData = array('url_to_post' => 'https://post.craigslist.org/k/' . $postingResults['random22'] . '/' . $postingResults['random5']);
+			$craigslistUrlModel = ORM::factory('CraigslistUrl')->values($craigslistUrlData);
+			$craigslistUrlModel->save();
+		}
+
+		$this->imapHandler->disconnectFromIMAPMailbox();
+	}
 	
-		exit('frederick debugging here');
-		return 1;
+	
+	public function postToCraigsListPart2($verificationCode)
+	{
+		// anhi to ibutang ang matching sa tanan urls nga naka store sa craigslisturls table sa data_synd_platform
+		$debug = true;
+
+		$craigslistUrls = ORM::factory('CraigslistUrl')->find_all();
+
+		foreach($craigslistUrls as $craigslistUrl)
+		{
+			$stepsAndConfiguration = $this->postVerificationCodeAssembler($craigslistUrl->url_to_post, $verificationCode);
+			$postingResults = $this->post($debug, $stepsAndConfiguration);
+		}
+		
+		
 	}
 
 
@@ -230,19 +283,27 @@ class Model_Listings_CraigsListsHandler extends Model
 	}
 
 
-	public function variantAAssembler($property, $city)
+	public function variantAAssemblerPart1($property, $city)
 	{
 		$variantAConfiguration = array();
-		$variantAConfiguration['login'] 		 = $this->loginStepAssembler();
-		$variantAConfiguration['selectLocation'] = $this->selectLocationAssembler($city->craigslist_areaabb);
-		$variantAConfiguration['chooseType']	 = $this->chooseTypeAssembler();
-		$variantAConfiguration['chooseCategory'] = $this->chooseCategoryAssembler();
-		$variantAConfiguration['postProperty']	 = $this->postPropertyAssembler($property, $city);
-		$variantAConfiguration['postImage']		 = $this->postImageAssembler($property->photos);
-		$variantAConfiguration['doneWithImages'] = $this->doneWithImagesAssembler();
-		$variantAConfiguration['publish']		 = $this->publishAssembler();
-		$variantAConfiguration['emailVerify']	 = $this->emailVerifyAssembler();
-		$variantAConfiguration['phoneVerify']    = $this->phoneVerifyAssembler();
+		$variantAConfiguration['login'] 		 		 = $this->loginStepAssembler();
+		$variantAConfiguration['selectLocation'] 		 = $this->selectLocationAssembler($city->craigslist_areaabb);
+		$variantAConfiguration['chooseType']	 		 = $this->chooseTypeAssembler();
+		$variantAConfiguration['chooseCategory'] 		 = $this->chooseCategoryAssembler();
+		$variantAConfiguration['postProperty']	 		 = $this->postPropertyAssembler($property, $city);
+		$variantAConfiguration['postImage']		 		 = $this->postImageAssembler($property->photos);
+		$variantAConfiguration['doneWithImages'] 		 = $this->doneWithImagesAssembler();
+		$variantAConfiguration['publish']		 		 = $this->publishAssembler();
+		
+		return $variantAConfiguration;
+	}
+
+
+	public function variantAAssemblerPart2()
+	{
+		$variantAConfiguration['emailVerify'] 			 = $this->emailVerifyAssembler();
+		$variantAConfiguration['createPostingAssembler'] = $this->createPostingAssembler();
+		$variantAConfiguration['phoneVerify'] 			 = $this->phoneVerifyAssembler();
 
 		return $variantAConfiguration;
 	}
@@ -264,8 +325,8 @@ class Model_Listings_CraigsListsHandler extends Model
 										);
 		 return $loginStepConfiguration['login'];
 	}
-	
-	
+
+
 	public function selectLocationAssembler($areaabb)
 	{
 		$selectLocationConfiguration = array('selectLocation' => array('configuration' => array('CURLOPT_URL' 	   	     => 'https://post.craigslist.org/c/' . $areaabb,  //'https://accounts.craigslist.org/login/pstrdr?areaabb='.$areaabb.'',
@@ -283,8 +344,8 @@ class Model_Listings_CraigsListsHandler extends Model
 											);
 		return $selectLocationConfiguration['selectLocation'];
 	}
-	
-	
+
+
 	public function chooseTypeAssembler()
 	{
 		$chooseTypeConfiguration = array('chooseType' => array('configuration' => array('CURLOPT_URL' 	   	   => 'https://post.craigslist.org/k/%s/%s',
@@ -304,7 +365,7 @@ class Model_Listings_CraigsListsHandler extends Model
 		return $chooseTypeConfiguration['chooseType'];
 	}
 
-	
+
 	public function chooseCategoryAssembler()
 	{
 		$chooseCategory = array('chooseCategory' => array('configuration' => array('CURLOPT_URL' 	   	    => 'https://post.craigslist.org/k/%s/%s',
@@ -324,7 +385,7 @@ class Model_Listings_CraigsListsHandler extends Model
 		return $chooseCategory['chooseCategory'];
 	}
 
-	
+
 	public function postPropertyAssembler($property, $city)
 	{
 		//echo "<pre>";
@@ -341,8 +402,8 @@ class Model_Listings_CraigsListsHandler extends Model
 																			   'formatURL'			   => true,
 																			   'formatReferer'		   => true
 								   											  ),
-								   					  'postVars'	  => array('FromEMail' 		 => $property->user->email,
-								   							 				   'ConfirmEMail'	 => $property->user->email,
+								   					  'postVars'	  => array('FromEMail' 		 => $property->user->email_craigslist,
+								   							 				   'ConfirmEMail'	 => $property->user->email_craigslist,
 																			   'Privacy' 		 => 'C',
 																			   'contact_phone_ok'=> 1,
 																			   'contact_text_ok' => 1,
@@ -369,7 +430,7 @@ class Model_Listings_CraigsListsHandler extends Model
 		return $postProperty['postProperty'];
 	}
 
-	
+
 	public function postImageAssembler($photo)
 	{
 		$postImage = array('postImage' => array('configuration'	=> array('CURLOPT_URL' => 'https://post.craigslist.org/k/%s/%s',
@@ -394,7 +455,7 @@ class Model_Listings_CraigsListsHandler extends Model
 		return $postImage['postImage'];
 	}
 
-	
+
 	public function doneWithImagesAssembler()
 	{
 		$doneWithImages = array('doneWithImages' => array('configuration' => array('CURLOPT_URL' 			=> 'https://post.craigslist.org/k/%s/%s',
@@ -438,26 +499,49 @@ class Model_Listings_CraigsListsHandler extends Model
 		return $publish['publish'];
 	}
 
-	
+
 	public function emailVerifyAssembler()
 	{
-		$emailVerify = array('emailVerify'	=> array('configuration' 	=> array('CURLOPT_URL' 	   	   	  => 'https://post.craigslist.org/u/%s/%s',
+		$url = $this->imapHandler->getCraigslistPostingURL();
+		
+		$emailVerify = array('emailVerify'	=> array('configuration' 	=> array('CURLOPT_URL' 	   	   	  => $url,
 													   							 'CURLOPT_RETURNTRANSFER' => 1,
 													   							 'CURLOPT_COOKIEJAR'  	  => $this->cookieFilePath,
 													   							 'CURLOPT_COOKIEFILE' 	  => $this->cookieFilePath,
 													   							 'CURLOPT_USERAGENT'  	  => $this->userAgent,
 													   							 'CURLOPT_POST'		      => false,
 													   							 'CURLOPT_FOLLOWLOCATION' => true,
-													   							 'formatURL'			  => true,
+													   							 'formatURL'			  => false,
 													   							 'formatReferer'		  => false
 													   							),
 													 'postVars'			=> array()
 													)
 							);
+		
 		return $emailVerify['emailVerify'];
 	}
 
 	
+	public function createPostingAssembler()
+	{
+		$createPosting = array('createPosting' => array('configuration' => array('CURLOPT_URL' 			  => 'https://post.craigslist.org/k/%s/%s',
+													   							 'CURLOPT_RETURNTRANSFER' => 1,
+													   							 'CURLOPT_COOKIEJAR'  	  => $this->cookieFilePath,
+													   							 'CURLOPT_COOKIEFILE' 	  => $this->cookieFilePath,
+													   							 'CURLOPT_USERAGENT'  	  => $this->userAgent,
+													   							 'CURLOPT_POST'		      => true,
+													   							 'CURLOPT_FOLLOWLOCATION' => true,
+													   							 'formatURL'			  => true,
+													   							 'formatReferer'		  => false
+																			    ),
+														'postVars'	   => array('continue' => 'y')
+													   )
+							  );
+		
+		return $createPosting['createPosting'];
+	}
+	
+
 	public function phoneVerifyAssembler()
 	{
 		$phoneVerify = array('phoneVerify' => array('configuration' => array('CURLOPT_URL' 		  	 => 'https://post.craigslist.org/k/%s/%s',
@@ -470,7 +554,7 @@ class Model_Listings_CraigsListsHandler extends Model
 																			 'CURLOPT_FOLLOWLOCATION'=> true,
 																			 'formatURL'			 => true,
 																			 'formatReferer'		 => true
-										   									 ),
+										   									),
 													 'postVars'		=> array('n'  		=> $this->n,
 													 						 'n2' 		=> $this->n2,
 													 						 'n3' 		=> $this->n3,
@@ -482,5 +566,26 @@ class Model_Listings_CraigsListsHandler extends Model
 							);
 		return $phoneVerify['phoneVerify'];
 	}
+
+	
+	public function postVerificationCodeAssembler($urlToPost, $verificationCode)
+	{
+		$postVerificationCodeAssembler = array('postVerificationCodeAssembler' => array('configuration' => array('CURLOPT_URL' 		  	 => '',
+																												 'CURLOPT_RETURNTRANSFER'=> 1,
+																												 'CURLOPT_COOKIEJAR'  	 => $this->cookieFilePath,
+																												 'CURLOPT_COOKIEFILE' 	 => $this->cookieFilePath,
+																												 'CURLOPT_REFERER'    	 => '',
+																												 'CURLOPT_USERAGENT'  	 => $this->userAgent,
+																												 'CURLOPT_POST'		  	 => true,
+																												 'CURLOPT_FOLLOWLOCATION'=> true,
+																												 'formatURL'			 => true,
+																												 'formatReferer'		 => true
+																											   	),
+																						'postVars'		=> array()
+																					   )
+											  );
+		return $postVerificationCodeAssembler['postVerificationCodeAssembler'];
+	}
+	
 	
 }

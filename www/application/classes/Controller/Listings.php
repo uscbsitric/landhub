@@ -59,7 +59,7 @@ class Controller_Listings extends Lsp_Controller_Template
 	{
 		$postVariables = $this->request->post();
 		$listingsModel = ORM::factory('Listing');
-		$listingsModel->postToCraigslist($postVariables);
+		$listingsModel->postToCraigslistPart1($postVariables, $this->_user->id);
 
 		$this->template->content = View::factory('html/listings/craigslistpost');
 		//$craigslistHandler = ORM::factory('Listings_CraigsListsHandler');
