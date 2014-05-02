@@ -1,3 +1,4 @@
+
 <div class="page-header page-header-with-buttons">
     <h1 class="pull-left"><span>Properties</span></h1>
 </div>
