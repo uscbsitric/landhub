@@ -31,7 +31,8 @@ class Model_Listings_CraigsListsHandler extends Model
 	private $goPublish		  = "";				  // from $_POST, some flagging mechanism
 	// PUBLISH credentials
 	// SENDVERIFICATIONCODE credentials
-	
+	private $authstep = '';
+	private $goSubmitVerCode = '';
 	// SENDVERIFICATIONCODE credentials
 	
 	private $userAgent;
@@ -68,6 +69,8 @@ class Model_Listings_CraigsListsHandler extends Model
 		$this->n3				= '7218';
 		$this->callLang			= 'en';
 		$this->callType			= 'voice';
+		$this->authstep			= 'redeem';
+		$this->goSubmitVerCode	= 'submit verification code';
 	}
 
 
@@ -251,7 +254,9 @@ class Model_Listings_CraigsListsHandler extends Model
 			$stepsAndConfiguration = $this->variantAAssemblerPart2($property, $city);
 			$postingResults = $this->post($debug, $stepsAndConfiguration);
 
-			$craigslistUrlData = array('url_to_post' => 'https://post.craigslist.org/k/' . $postingResults['random22'] . '/' . $postingResults['random5']);
+			$craigslistUrlData = array('url_to_post' 		=> 'https://post.craigslist.org/k/' . $postingResults['random22'] . '/' . $postingResults['random5'],
+									   'crypted_step_check' => $postingResults['cryptedStepCheck']
+									  );
 			$craigslistUrlModel = ORM::factory('CraigslistUrl')->values($craigslistUrlData);
 			$craigslistUrlModel->save();
 		}
@@ -269,7 +274,7 @@ class Model_Listings_CraigsListsHandler extends Model
 
 		foreach($craigslistUrls as $craigslistUrl)
 		{
-			$stepsAndConfiguration = $this->postVerificationCodeAssembler($craigslistUrl->url_to_post, $verificationCode);
+			$stepsAndConfiguration = $this->postVerificationCodeAssembler($craigslistUrl->url_to_post, $verificationCode, $craigslistUrl->crypted_step_check);
 			$postingResults = $this->post($debug, $stepsAndConfiguration);
 		}
 		
@@ -568,20 +573,24 @@ class Model_Listings_CraigsListsHandler extends Model
 	}
 
 	
-	public function postVerificationCodeAssembler($urlToPost, $verificationCode)
+	public function postVerificationCodeAssembler($urlToPost, $verificationCode, $cryptedStepCheck)
 	{
-		$postVerificationCodeAssembler = array('postVerificationCodeAssembler' => array('configuration' => array('CURLOPT_URL' 		  	 => '',
+		$postVerificationCodeAssembler = array('postVerificationCodeAssembler' => array('configuration' => array('CURLOPT_URL' 		  	 => $urlToPost,
 																												 'CURLOPT_RETURNTRANSFER'=> 1,
 																												 'CURLOPT_COOKIEJAR'  	 => $this->cookieFilePath,
 																												 'CURLOPT_COOKIEFILE' 	 => $this->cookieFilePath,
-																												 'CURLOPT_REFERER'    	 => '',
+																												 'CURLOPT_REFERER'    	 => 'https://post.craigslist.org/k/%s/%s?s=pc',
 																												 'CURLOPT_USERAGENT'  	 => $this->userAgent,
 																												 'CURLOPT_POST'		  	 => true,
 																												 'CURLOPT_FOLLOWLOCATION'=> true,
 																												 'formatURL'			 => true,
 																												 'formatReferer'		 => true
 																											   	),
-																						'postVars'		=> array()
+																						'postVars'		=> array('cryptedStepCheck' => $cryptedStepCheck,
+																												 'authstep'			=> $this->authstep,
+																												 'userCode'			=> $verificationCode,
+																												 'go'				=> $this->goSubmitVerCode
+																												)
 																					   )
 											  );
 		return $postVerificationCodeAssembler['postVerificationCodeAssembler'];
