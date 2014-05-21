@@ -33,7 +33,6 @@ class Model_IMAPHandler extends Model
 				break;
 		}
 		
-		exit($this->hostname . '<---->' . $this->password . '<---->' . $this->username);
 		// try to connect
 		$this->inbox = imap_open($this->hostname, $this->username, $this->password); // this is now a mailbox if this succeeds.
 
