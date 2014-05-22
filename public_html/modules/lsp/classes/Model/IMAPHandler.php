@@ -83,6 +83,10 @@ class Model_IMAPHandler extends Model
 		{
 			// read email, always the first email, since all other emails are pre-deleted before attempting to post
 			$this->connectToIMAPMailbox();
+			
+			var_dump(imap_num_msg($this->inbox));
+			exit('frederick debugging here');
+			
 			$emailMessage = imap_fetchbody($this->inbox, 1, 2);  // mo work ra if mo perform ko og imap_open() first, i think.... lets see
 			preg_match_all('/[\/u\/][\w-]+/', $emailMessage, $result);
 			$craigslistPostingURL = 'https://post.craigslist.org/u' . $result[0][8] . $result[0][9];
