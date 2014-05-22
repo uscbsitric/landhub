@@ -207,7 +207,10 @@ class Model_Listings_CraigsListsHandler extends Model
 				echo "<br>";
 				echo '<div id="loginResult" style="width: 800; height: 900; overflow: hidden;">
 							'.$curlRequestResult['markup'].'
-						  </div>';
+					 </div>';
+				echo '<div>'.$curlRequestResult['random22'].'</div>';
+				echo '<div>'.$curlRequestResult['random5'].'</div>';
+				echo '<div>'.$curlRequestResult['cryptedStepCheck'].'</div>';
 			}
 		
 			$stepCounter++;
