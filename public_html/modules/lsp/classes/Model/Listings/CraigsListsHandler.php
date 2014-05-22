@@ -309,9 +309,10 @@ class Model_Listings_CraigsListsHandler extends Model
 
 	public function variantAAssemblerPart2()
 	{
-		$variantAConfiguration['emailVerify'] 			 = $this->emailVerifyAssembler();
-		$variantAConfiguration['createPostingAssembler'] = $this->createPostingAssembler();
-		$variantAConfiguration['phoneVerify'] 			 = $this->phoneVerifyAssembler();
+		$variantAConfiguration['emailVerify'] 			 		= $this->emailVerifyAssembler();
+		$variantAConfiguration['createPostingAssembler'] 		= $this->createPostingAssembler();
+		$variantAConfiguration['phoneVerify'] 			 		= $this->phoneVerifyAssembler();
+		$variantAConfiguration['postVerificationCodeAssembler']	= $this->postVerificationCodeAssembler();
 
 		return $variantAConfiguration;
 	}
