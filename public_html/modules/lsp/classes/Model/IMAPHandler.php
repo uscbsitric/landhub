@@ -94,8 +94,8 @@ class Model_IMAPHandler extends Model
 				foreach($emails as $email_number)
 				{
 					/* get information specific to this email */
-					$overview = imap_fetch_overview($inbox,$email_number,0);
-					$message  = imap_fetchbody($inbox,$email_number,2);
+					$overview = imap_fetch_overview($this->inbox,$email_number,0);
+					$message  = imap_fetchbody($this->inbox,$email_number,2);
 
 					/* output the email header information */
 					$output.= '<div class="toggler '.($overview[0]->seen ? 'read' : 'unread').'">';
