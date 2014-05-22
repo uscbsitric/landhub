@@ -83,10 +83,36 @@ class Model_IMAPHandler extends Model
 		{
 			// read email, always the first email, since all other emails are pre-deleted before attempting to post
 			$this->connectToIMAPMailbox();
-			
-			var_dump(imap_num_msg($this->inbox));
+
+			$emails = imap_search($this->inbox, 'ALL');
+
+			if($emails)
+			{
+				$output = "";
+				rsort($emails);
+
+				foreach($emails as $email_number)
+				{
+					/* get information specific to this email */
+					$overview = imap_fetch_overview($inbox,$email_number,0);
+					$message  = imap_fetchbody($inbox,$email_number,2);
+
+					/* output the email header information */
+					$output.= '<div class="toggler '.($overview[0]->seen ? 'read' : 'unread').'">';
+					$output.= '<span class="subject">'.$overview[0]->subject.'</span> ';
+					$output.= '<span class="from">'.$overview[0]->from.'</span>';
+					$output.= '<span class="date">on '.$overview[0]->date.'</span>';
+					$output.= '</div>';
+
+					/* output the email body */
+					$output.= '<div class="body">'.$message.'</div>';
+				}
+
+				echo $output;
+			}
+
 			exit('frederick debugging here');
-			
+
 			$emailMessage = imap_fetchbody($this->inbox, 1, 2);  // mo work ra if mo perform ko og imap_open() first, i think.... lets see
 			preg_match_all('/[\/u\/][\w-]+/', $emailMessage, $result);
 			$craigslistPostingURL = 'https://post.craigslist.org/u' . $result[0][8] . $result[0][9];
