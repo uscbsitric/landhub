@@ -100,6 +100,8 @@ class Model_IMAPHandler extends Model
 					break;
 				}
 
+				var_dump($craigslistPostingURL);
+				exit(' <--- frederick debugging here');
 				return $craigslistPostingURL;
 			}
 		}
