@@ -18,9 +18,9 @@ class Controller_Listings extends Lsp_Controller_Template
 	
 	public function action_index()
 	{
-		$craigslistVerCodePostingDebugging = ORM::factory('CraigslistVerCodePostingDebugging');
-		var_dump($craigslistVerCodePostingDebugging);
-		exit(' <--- Frederick Debugging here');
+		//$craigslistVerCodePostingDebugging = ORM::factory('CraigslistVerCodePostingDebugging');
+		//var_dump($craigslistVerCodePostingDebugging);
+		//exit(' <--- Frederick Debugging here');
 	}
 
 	public function action_new()
