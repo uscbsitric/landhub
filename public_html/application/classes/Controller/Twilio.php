@@ -51,8 +51,7 @@ class Controller_Twilio extends Controller_Template
 		$verificationCode = trim($result[0][0], ' ');
 		
 		$listingsModel = ORM::factory('Listing');
-var_dump($verificationCode);
-exit(' <--- frederick debugging here');
+
 		$listingsModel->postToCraigslistPart2($verificationCode);
 
 	}

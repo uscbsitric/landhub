@@ -275,13 +275,24 @@ class Model_Listings_CraigsListsHandler extends Model
 
 		$craigslistUrls = ORM::factory('CraigslistUrl')->find_all();
 
+		$craigslistVerCodePostingDebugging = ORM::factory('CraigslistVerCodePostingDebugging');
+		$craigslistVerCodePostingDebuggingValues = array();
+		
 		foreach($craigslistUrls as $craigslistUrl)
 		{
 			$stepsAndConfiguration = $this->postVerificationCodeAssembler($craigslistUrl->url_to_post, $verificationCode, $craigslistUrl->crypted_step_check);
 			$postingResults = $this->post($debug, $stepsAndConfiguration);
+
+			if($debug)
+			{
+				$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => '',
+						'url_to_post'			  => '',
+						'posting_results'		  => ''
+				);
+				$craigslistVerCodePostingDebugging->values($craigslistVerCodePostingDebuggingValues);
+				$craigslistVerCodePostingDebugging->saved();
+			}
 		}
-		
-		
 	}
 
 
