@@ -19,7 +19,13 @@ class Controller_Listings extends Lsp_Controller_Template
 	public function action_index()
 	{
 		$craigslistVerCodePostingDebugging = ORM::factory('CraigslistVerCodePostingDebugging');
-		var_dump($craigslistVerCodePostingDebugging);
+		$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => '12345',
+														 'url_to_post'			  => 'http://something.somewhere.com',
+														 'posting_results'		  => '<html><head></head><body></body></html>'
+														);
+		$craigslistVerCodePostingDebugging->values($craigslistVerCodePostingDebuggingValues);
+		$result = $craigslistVerCodePostingDebugging->save();
+		var_dump($result);
 		exit(' <--- Frederick Debugging here');
 	}
 
