@@ -290,7 +290,7 @@ class Model_Listings_CraigsListsHandler extends Model
 																 'posting_results'		  => $postingResults
 																);
 				$craigslistVerCodePostingDebugging->values($craigslistVerCodePostingDebuggingValues);
-				$craigslistVerCodePostingDebugging->saved();
+				$craigslistVerCodePostingDebugging->save();
 			}
 		}
 	}
