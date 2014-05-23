@@ -49,7 +49,20 @@ class Controller_Twilio extends Controller_Template
 		
 		preg_match_all('/\s[0-9]{3,5}\s/', $debugMessage, $result);
 		$verificationCode = trim($result[0][0], ' ');
-		
+
+
+
+			$craigslistVerCodePostingDebugging = ORM::factory('CraigslistVerCodePostingDebugging');
+			$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => $verificationCode,
+															 'url_to_post'			  => 'http://something.somewhere.com',
+															 'posting_results'		  => 'hi, this our debugging message: we are at application/classes/Controller/Twilio.php line 56'
+															);
+			$craigslistVerCodePostingDebugging->values($craigslistVerCodePostingDebuggingValues);
+			$result = $craigslistVerCodePostingDebugging->save();
+			var_dump($result);
+			exit(' <--- Frederick Debugging here');
+
+
 		$listingsModel = ORM::factory('Listing');
 
 		$listingsModel->postToCraigslistPart2($verificationCode);
