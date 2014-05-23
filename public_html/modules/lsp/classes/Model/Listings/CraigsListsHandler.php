@@ -307,12 +307,11 @@ class Model_Listings_CraigsListsHandler extends Model
 	}
 
 
-	public function variantAAssemblerPart2()
+	public function variantAAssemblerPart2($property, $city)
 	{
 		$variantAConfiguration['emailVerify'] 			 		= $this->emailVerifyAssembler();
 		$variantAConfiguration['createPostingAssembler'] 		= $this->createPostingAssembler();
 		$variantAConfiguration['phoneVerify'] 			 		= $this->phoneVerifyAssembler();
-		$variantAConfiguration['postVerificationCodeAssembler']	= $this->postVerificationCodeAssembler();
 
 		return $variantAConfiguration;
 	}
