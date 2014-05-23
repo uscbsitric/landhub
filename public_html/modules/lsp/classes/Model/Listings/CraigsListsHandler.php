@@ -285,10 +285,10 @@ class Model_Listings_CraigsListsHandler extends Model
 
 			if($debug)
 			{
-				$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => '',
-						'url_to_post'			  => '',
-						'posting_results'		  => ''
-				);
+				$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => $verificationCode,
+																 'url_to_post'			  => $craigslistUrl->url_to_post,
+																 'posting_results'		  => $postingResults
+																);
 				$craigslistVerCodePostingDebugging->values($craigslistVerCodePostingDebuggingValues);
 				$craigslistVerCodePostingDebugging->saved();
 			}
