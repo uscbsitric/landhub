@@ -270,6 +270,16 @@ class Model_Listings_CraigsListsHandler extends Model
 	
 	public function postToCraigsListPart2($verificationCode)
 	{
+		$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => $verificationCode,
+														 'url_to_post'			  => 'tesing',//$craigslistUrl->url_to_post,
+														 'posting_results'		  => 'hi, this our debugging message: we are at modules/lsp/classes/Model/Listings/CraigsListsHandler.php line 290'//$postingResults
+														);
+		$craigslistVerCodePostingDebugging->values($craigslistVerCodePostingDebuggingValues);
+		$craigslistVerCodePostingDebugging->save();
+		exit('frederick debugging here');
+		
+		
+		
 		// anhi to ibutang ang matching sa tanan urls nga naka store sa craigslisturls table sa data_synd_platform
 		$debug = true;
 
@@ -286,8 +296,8 @@ class Model_Listings_CraigsListsHandler extends Model
 			if($debug)
 			{
 				$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => $verificationCode,
-																 'url_to_post'			  => $craigslistUrl->url_to_post,
-																 'posting_results'		  => $postingResults
+																 'url_to_post'			  => 'tesing',//$craigslistUrl->url_to_post,
+																 'posting_results'		  => 'hi, this our debugging message: we are at modules/lsp/classes/Model/Listings/CraigsListsHandler.php line 290'//$postingResults
 																);
 				$craigslistVerCodePostingDebugging->values($craigslistVerCodePostingDebuggingValues);
 				$craigslistVerCodePostingDebugging->save();
