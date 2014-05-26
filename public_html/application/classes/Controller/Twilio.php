@@ -51,7 +51,7 @@ class Controller_Twilio extends Controller_Template
 		$verificationCode = trim($result[0][0], ' ');
 
 
-
+			/*****
 			$craigslistVerCodePostingDebugging = ORM::factory('CraigslistVerCodePostingDebugging');
 			$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => $verificationCode,
 															 'url_to_post'			  => 'http://something.somewhere.com',
@@ -61,6 +61,7 @@ class Controller_Twilio extends Controller_Template
 			$result = $craigslistVerCodePostingDebugging->save();
 			var_dump($result);
 			exit(' <--- Frederick Debugging here');
+			*****/
 
 
 		$listingsModel = ORM::factory('Listing');
