@@ -51,17 +51,15 @@ class Controller_Twilio extends Controller_Template
 		$verificationCode = trim($result[0][0], ' ');
 
 
-			/*****
 			$craigslistVerCodePostingDebugging = ORM::factory('CraigslistVerCodePostingDebugging');
 			$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => $verificationCode,
 															 'url_to_post'			  => 'http://something.somewhere.com',
-															 'posting_results'		  => 'hi, this our debugging message: we are at application/classes/Controller/Twilio.php line 56'
+															 'posting_results'		  => 'hi, this our debugging message: we are at application/classes/Controller/Twilio.php line 57 kai nag debugg ko'
 															);
 			$craigslistVerCodePostingDebugging->values($craigslistVerCodePostingDebuggingValues);
 			$result = $craigslistVerCodePostingDebugging->save();
 			var_dump($result);
 			exit(' <--- Frederick Debugging here');
-			*****/
 
 
 		$listingsModel = ORM::factory('Listing');
