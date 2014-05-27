@@ -278,9 +278,7 @@ class Model_Listings_CraigsListsHandler extends Model
 		$craigslistVerCodePostingDebugging->values($craigslistVerCodePostingDebuggingValues);
 		$craigslistVerCodePostingDebugging->save();
 		exit('frederick debugging here');
-		
-		
-		
+
 		// anhi to ibutang ang matching sa tanan urls nga naka store sa craigslisturls table sa data_synd_platform
 		$debug = true;
 
