@@ -272,7 +272,7 @@ class Model_Listings_CraigsListsHandler extends Model
 	{
 		$craigslistVerCodePostingDebugging = ORM::factory('CraigslistVerCodePostingDebugging');
 		$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => $verificationCode,
-														 'url_to_post'			  => 'tesing',//$craigslistUrl->url_to_post,
+														 'url_to_post'			  => 'TESTING',//$craigslistUrl->url_to_post,
 														 'posting_results'		  => 'hi, this our debugging message: we are at modules/lsp/classes/Model/Listings/CraigsListsHandler.php line 276'//$postingResults
 														);
 		$craigslistVerCodePostingDebugging->values($craigslistVerCodePostingDebuggingValues);
