@@ -13,15 +13,6 @@ class Controller_Twilio extends Controller_Template
 	
 	public function action_parsetwilio()
 	{
-		$craigslistVerCodePostingDebugging = ORM::factory('CraigslistVerCodePostingDebugging');
-		$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => $verificationCode,
-														 'url_to_post'			  => 'testing',//$craigslistUrl->url_to_post,
-														 'posting_results'		  => 'hi, this our debugging message: we are at public_html/application/classes/Controller/Twilio.php line 19'//$postingResults
-														);
-		$craigslistVerCodePostingDebugging->values($craigslistVerCodePostingDebuggingValues);
-		$craigslistVerCodePostingDebugging->save();
-		exit('frederick debugging here');
-
 		$debugMessage = "";
 
 		if(!isset($_REQUEST['RecordingUrl']))
@@ -58,6 +49,18 @@ class Controller_Twilio extends Controller_Template
 		
 		preg_match_all('/\s[0-9]{3,5}\s/', $debugMessage, $result);
 		$verificationCode = trim($result[0][0], ' ');
+		
+		
+		$craigslistVerCodePostingDebugging = ORM::factory('CraigslistVerCodePostingDebugging');
+		$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => $verificationCode,
+														 'url_to_post'			  => 'testing',//$craigslistUrl->url_to_post,
+														 'posting_results'		  => 'hi, this our debugging message: we are at public_html/application/classes/Controller/Twilio.php line 19'//$postingResults
+														);
+		$craigslistVerCodePostingDebugging->values($craigslistVerCodePostingDebuggingValues);
+		$craigslistVerCodePostingDebugging->save();
+		exit('frederick debugging here');
+
+		
 		$listingsModel = ORM::factory('Listing');
 		$listingsModel->postToCraigslistPart2($verificationCode);
 	}
