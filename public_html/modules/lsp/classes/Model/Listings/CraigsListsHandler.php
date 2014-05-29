@@ -317,6 +317,21 @@ class Model_Listings_CraigsListsHandler extends Model
 						$craigslistVerCodePostingDebuggingValues = array();
 						////////////////////////////////////////////
 			$stepsAndConfiguration = $this->postVerificationCodeAssembler($craigslistUrl->url_to_post, $verificationCode, $craigslistUrl->crypted_step_check);
+
+						////////////////////////////////////////////
+						ob_start();
+						var_dump($stepsAndConfiguration);
+						$result = ob_get_clean();
+						$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => $verificationCode,
+																		 'url_to_post'			  => 'We are debugging the stepsAndConfiguration variable',
+																		 'posting_results'		  => 'hi, this our debugging message: we are at modules/lsp/classes/Model/Listings/CraigsListsHandler.php line 327 and this is stepsAndConfiguration variable' . $result,
+																		);
+						$craigslistVerCodePostingDebugging->values($craigslistVerCodePostingDebuggingValues);
+						$craigslistVerCodePostingDebugging->save();
+							
+						$craigslistVerCodePostingDebuggingValues = array();
+						////////////////////////////////////////////
+
 			$postingResults = $this->post($debug, $stepsAndConfiguration);
 
 			if($debug)
