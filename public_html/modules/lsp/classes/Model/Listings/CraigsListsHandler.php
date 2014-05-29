@@ -290,19 +290,48 @@ class Model_Listings_CraigsListsHandler extends Model
 		$craigslistVerCodePostingDebugging = ORM::factory('CraigslistVerCodePostingDebugging');
 		$craigslistVerCodePostingDebuggingValues = array();
 		
+		
+						//////////////////////////////////////////////
+						ob_start();
+						var_dump($craigslistUrls->count() );
+						$result = ob_get_clean();
+						$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => 'TESTING',
+																		 'url_to_post'			  => 'We are debugging the number of craigslisturls in the database at this point',
+																		 'posting_results'		  => 'hi, this our debugging message: we are at modules/lsp/classes/Model/Listings/CraigsListsHandler.php line 300, and this is the number of craigslisturls: ' . $result
+																		);
+						$craigslistVerCodePostingDebugging->values($craigslistVerCodePostingDebuggingValues);
+						$craigslistVerCodePostingDebugging->save();
+							
+						$craigslistVerCodePostingDebuggingValues = array();
+						sleep(8);
+						////////////////////////////////////////////
+					
+		
 		foreach($craigslistUrls as $craigslistUrl)
 		{
+						////////////////////////////////////////////
+						$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => 'TESTING',
+																		 'url_to_post'			  => 'We are debugging inside the foreach loop already',
+																		 'posting_results'		  => 'hi, this our debugging message: we are at modules/lsp/classes/Model/Listings/CraigsListsHandler.php line 315'
+																		);
+						$craigslistVerCodePostingDebugging->values($craigslistVerCodePostingDebuggingValues);
+						$craigslistVerCodePostingDebugging->save();
+							
+						$craigslistVerCodePostingDebuggingValues = array();
+						////////////////////////////////////////////
 			$stepsAndConfiguration = $this->postVerificationCodeAssembler($craigslistUrl->url_to_post, $verificationCode, $craigslistUrl->crypted_step_check);
 			$postingResults = $this->post($debug, $stepsAndConfiguration);
 
 			if($debug)
 			{
-				$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => $verificationCode,
-																 'url_to_post'			  => $craigslistUrl->url_to_post,
-																 'posting_results'		  => $postingResults //'hi, this our debugging message: we are at modules/lsp/classes/Model/Listings/CraigsListsHandler.php line 302'//
-																);
-				$craigslistVerCodePostingDebugging->values($craigslistVerCodePostingDebuggingValues);
-				$craigslistVerCodePostingDebugging->save();
+						////////////////////////////////////////////
+						$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => $verificationCode,
+																		 'url_to_post'			  => $craigslistUrl->url_to_post,
+																		 'posting_results'		  => $postingResults //'hi, this our debugging message: we are at modules/lsp/classes/Model/Listings/CraigsListsHandler.php line 302'//
+																		);
+						$craigslistVerCodePostingDebugging->values($craigslistVerCodePostingDebuggingValues);
+						$craigslistVerCodePostingDebugging->save();
+						////////////////////////////////////////////
 			}
 		}
 	}
