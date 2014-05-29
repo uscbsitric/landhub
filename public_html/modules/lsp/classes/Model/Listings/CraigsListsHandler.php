@@ -292,12 +292,9 @@ class Model_Listings_CraigsListsHandler extends Model
 		
 		
 						//////////////////////////////////////////////
-						ob_start();
-						var_dump($craigslistUrls->count() );
-						$result = ob_get_clean();
-						$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => 'TESTING',
+						$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => $verificationCode,
 																		 'url_to_post'			  => 'We are debugging the number of craigslisturls in the database at this point',
-																		 'posting_results'		  => 'hi, this our debugging message: we are at modules/lsp/classes/Model/Listings/CraigsListsHandler.php line 300, and this is the number of craigslisturls: ' . $result
+																		 'posting_results'		  => 'hi, this our debugging message: we are at modules/lsp/classes/Model/Listings/CraigsListsHandler.php line 297, and this is the number of craigslisturls: ' . $craigslistUrls->count()
 																		);
 						$craigslistVerCodePostingDebugging->values($craigslistVerCodePostingDebuggingValues);
 						$craigslistVerCodePostingDebugging->save();
@@ -310,9 +307,9 @@ class Model_Listings_CraigsListsHandler extends Model
 		foreach($craigslistUrls as $craigslistUrl)
 		{
 						////////////////////////////////////////////
-						$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => 'TESTING',
+						$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => $verificationCode,
 																		 'url_to_post'			  => 'We are debugging inside the foreach loop already',
-																		 'posting_results'		  => 'hi, this our debugging message: we are at modules/lsp/classes/Model/Listings/CraigsListsHandler.php line 315'
+																		 'posting_results'		  => 'hi, this our debugging message: we are at modules/lsp/classes/Model/Listings/CraigsListsHandler.php line 315, and the number of craigslisturls are: ' . $craigslistUrls->count(),
 																		);
 						$craigslistVerCodePostingDebugging->values($craigslistVerCodePostingDebuggingValues);
 						$craigslistVerCodePostingDebugging->save();
