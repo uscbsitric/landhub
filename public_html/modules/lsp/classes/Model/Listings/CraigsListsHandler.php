@@ -324,7 +324,6 @@ class Model_Listings_CraigsListsHandler extends Model
 			$stepsAndConfiguration = $this->postVerificationCodeAssembler($craigslistUrl->url_to_post, $verificationCode, $craigslistUrl->crypted_step_check);
 
 						////////////////////////////////////////////
-						/*****
 						ob_start();
 						var_dump($stepsAndConfiguration);
 						$result = ob_get_clean();
@@ -337,12 +336,12 @@ class Model_Listings_CraigsListsHandler extends Model
 							
 						$craigslistVerCodePostingDebuggingValues = array();
 						sleep(1);
-						*****/
 						////////////////////////////////////////////
 
 			$postingResults = $this->post($debug, $stepsAndConfiguration);
 			
 						////////////////////////////////////////////
+						/*****
 						ob_start();
 						var_dump($postingResults);
 						$result = ob_get_clean();
@@ -355,6 +354,7 @@ class Model_Listings_CraigsListsHandler extends Model
 							
 						$craigslistVerCodePostingDebuggingValues = array();
 						sleep(1);
+						*****/
 						////////////////////////////////////////////
 
 			if($debug)
@@ -665,6 +665,16 @@ class Model_Listings_CraigsListsHandler extends Model
 	
 	public function postVerificationCodeAssembler($urlToPost, $verificationCode, $cryptedStepCheck)
 	{
+		$exploded = explode('/', $urlToPost);
+
+		if(isset($exploded[4]))
+		{
+			$random22 = $exploded[4];
+			$dummy = $exploded[5];
+			$dummy = explode('?', $dummy);
+			$random5 = $dummy[0];
+		}
+
 		$postVerificationCodeAssembler = array('postVerificationCodeAssembler' => array('configuration' => array('CURLOPT_URL' 		  	 => $urlToPost,
 																												 'CURLOPT_RETURNTRANSFER'=> 1,
 																												 'CURLOPT_COOKIEJAR'  	 => $this->cookieFilePath,
@@ -673,10 +683,12 @@ class Model_Listings_CraigsListsHandler extends Model
 																												 'CURLOPT_USERAGENT'  	 => $this->userAgent,
 																												 'CURLOPT_POST'		  	 => true,
 																												 'CURLOPT_FOLLOWLOCATION'=> true,
-																												 'formatURL'			 => true,
+																												 'formatURL'			 => false,
 																												 'formatReferer'		 => true
 																											   	),
-																						'postVars'		=> array('cryptedStepCheck' => $cryptedStepCheck,
+																						'postVars'		=> array('random22'			=> $random22,
+																												 'random5'			=> $random5,
+																												 'cryptedStepCheck' => $cryptedStepCheck,
 																												 'authstep'			=> $this->authstep,
 																												 'userCode'			=> $verificationCode,
 																												 'go'				=> $this->goSubmitVerCode
