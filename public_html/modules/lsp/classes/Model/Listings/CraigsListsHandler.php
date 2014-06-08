@@ -308,6 +308,7 @@ class Model_Listings_CraigsListsHandler extends Model
 		
 		foreach($craigslistUrls as $craigslistUrl)
 		{
+			$debug = true;
 						////////////////////////////////////////////
 						/*****
 						$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => $verificationCode,
@@ -329,7 +330,7 @@ class Model_Listings_CraigsListsHandler extends Model
 						$result = ob_get_clean();
 						$craigslistVerCodePostingDebuggingValues = array('verification_code_used' => $verificationCode,
 																		 'url_to_post'			  => 'We are debugging the stepsAndConfiguration variable',
-																		 'posting_results'		  => 'hi, this our debugging message: we are at modules/lsp/classes/Model/Listings/CraigsListsHandler.php line 327 and this is stepsAndConfiguration variable' . $result,
+																		 'posting_results'		  => 'hi, this our debugging message: we are at modules/lsp/classes/Model/Listings/CraigsListsHandler.php line 332 and this is stepsAndConfiguration variable' . $result,
 																		);
 						$craigslistVerCodePostingDebugging->values($craigslistVerCodePostingDebuggingValues);
 						$craigslistVerCodePostingDebugging->save();
