@@ -52,8 +52,8 @@ class Model_Listings_CraigsListsHandler extends Model
 		require_once $phpQueryPath;
 
 		$this->cookieFilePath   = $_SERVER['DOCUMENT_ROOT'] . '../cookies';
-		$this->inputEmailHandle = 'landhubtestuser1@gmail.com'; //$configuration['emailAddress'];//'frederick.sandalo@ripeconcepts.com';
-		$this->inputPassword	= 'landhubtestuser$55'; //$configuration['password'];//'ripe1234';
+		$this->inputEmailHandle = 'frederick.sandalo@ripeconcepts.com'; //$configuration['emailAddress'];//'frederick.sandalo@ripeconcepts.com';
+		$this->inputPassword	= 'ripe1234'; //$configuration['password'];//'ripe1234';
 		$this->chooseTypeId		= 'ho';
 		$this->chooseCategoryId = '143';
 		$this->aPostImages 		= 'add';

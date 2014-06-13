@@ -11,8 +11,8 @@ class Model_Listing extends ORM
 		$configuration 	   = array('emailAddress' => '',
 								   'password'	  => ''
 								  );
-		$craigslistHandler = new Model_Listings_CraigsListsHandler($configuration);
-		//$craigslistHandler = ORM::factory('Listings_CraigsListsHandler');
+		//$craigslistHandler = new Model_Listings_CraigsListsHandler($configuration);
+		$craigslistHandler = ORM::factory('Listings_CraigsListsHandler');
 
 		$craigslistHandler->postToCraigslistPart1($property, $city, $userId, true);
 	}
