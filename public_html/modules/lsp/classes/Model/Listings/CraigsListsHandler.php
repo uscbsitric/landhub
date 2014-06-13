@@ -50,7 +50,8 @@ class Model_Listings_CraigsListsHandler extends Model
 	{
 		$phpQueryPath = Kohana::find_file('vendor', 'phpQueryOnefile');
 		require_once $phpQueryPath;
-
+var_dump($configuration);
+exit('frederick debugging here');
 		$this->cookieFilePath   = $_SERVER['DOCUMENT_ROOT'] . '../cookies';
 		$this->inputEmailHandle = $configuration['emailAddress'];//'frederick.sandalo@ripeconcepts.com';
 		$this->inputPassword	= $configuration['password'];	 //'ripe1234';
