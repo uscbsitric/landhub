@@ -62,8 +62,6 @@ class Controller_Listings extends Lsp_Controller_Template
 		$listingsModel->postToCraigslistPart1($postVariables, $this->_user->id);
 
 		$this->template->content = View::factory('html/listings/craigslistpost');
-		//$craigslistHandler = ORM::factory('Listings_CraigsListsHandler');
-		//$craigslistHandler->postToCraigsList($postVariables['propertyID']);
 	}
 	
 	public function action_youtube()
@@ -88,10 +86,6 @@ class Controller_Listings extends Lsp_Controller_Template
 		$stateID = $this->request->post('stateID');
 		$cities = ORM::factory('City')->select(array('id', 'name'))->where('state_abbr', '=', $stateID)->find_all()->as_array('id', 'name');
 		$jsonEncoded = json_encode($cities);
-		
-
-		//$this->request->headers('Content-type','application/json; charset='.Kohana::$charset);
-		//$this->response->body($jsonEncoded);
 
 		echo $jsonEncoded;
 		exit();

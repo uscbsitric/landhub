@@ -8,7 +8,12 @@ class Model_Listing extends ORM
 	{
 		$property 		   = ORM::factory('Property')->where('id', '=', $postVariables['propertyID'])->find();
 		$city	  		   = ORM::factory('City')->where('id', '=', $postVariables['cityID'])->find();
-		$craigslistHandler = ORM::factory('Listings_CraigsListsHandler');
+		$configuration 	   = array('emailAddress' => '',
+								   'password'	  => ''
+								  );
+		$craigslistHandler = new Model_Listings_CraigsListsHandler($configuration);
+		//$craigslistHandler = ORM::factory('Listings_CraigsListsHandler');
+		exit('Frederick Sandalo Finalizing Here');
 
 		$craigslistHandler->postToCraigslistPart1($property, $city, $userId, true);
 	}

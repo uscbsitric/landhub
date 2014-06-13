@@ -6,10 +6,10 @@ class Model_Listings_CraigsListsHandler extends Model
 	private $cookie			= "";
 	// LOGIN credentials
 	private $inputEmailHandle = ""; // from $_POST, meaning, user input; just use this for now
-	private $inputPassword	  = ""; 			  // from $_POST, meaning, user input; just use this for now
+	private $inputPassword	  = ""; // from $_POST, meaning, user input; just use this for now
 	// LOGIN credentials
 	// SELECT LOCATION credentials
-	private $areaabb		  = "";				      // from $_POST, meaning, user input; just use this for now
+	private $areaabb		  = "";	// from $_POST, meaning, user input; just use this for now
 	// SELECT LOCATION credentials
 	// CHOOSE TYPE credentials
 	private $chooseTypeId	  = "";
@@ -19,16 +19,16 @@ class Model_Listings_CraigsListsHandler extends Model
 	// CHOOSE CATEGORY credentials
 
 	// POSTIMAGE credentials
-	private $aPostImages	  = "";					  // from $_POST, some flagging mechanism
+	private $aPostImages	  = "";	// from $_POST, some flagging mechanism
 	//$filePostImages   = '@' . __DIR__ . '/ranch.JPG'; //'@/var/www/testArea/CraigList/ranch.JPG'; // from $_POST, meaning, user input;
 	// POSTIMAGE credentials
 	// DONEWITHIMAGES credentials
-	private $aDoneWithImages  = "";					  // from $_POST, some flagging mechanism
-	private $goDoneWithImages = "";		  // from $_POST, some flagging mechanism
+	private $aDoneWithImages  = "";	// from $_POST, some flagging mechanism
+	private $goDoneWithImages = "";	// from $_POST, some flagging mechanism
 	// DONEWITHIMAGES credentials
 	// PUBLISH credentials
-	private $continuePublish  = "";					  // from $_POST, some flagging mechanism
-	private $goPublish		  = "";				  // from $_POST, some flagging mechanism
+	private $continuePublish  = "";	// from $_POST, some flagging mechanism
+	private $goPublish		  = "";	// from $_POST, some flagging mechanism
 	// PUBLISH credentials
 	// SENDVERIFICATIONCODE credentials
 	private $authstep = '';
@@ -50,12 +50,10 @@ class Model_Listings_CraigsListsHandler extends Model
 	{
 		$phpQueryPath = Kohana::find_file('vendor', 'phpQueryOnefile');
 		require_once $phpQueryPath;
-		
-		// some configurations that are least likely to change
-		$this->cookieFilePath   = $_SERVER['DOCUMENT_ROOT'] . '../cookies';//getcwd()."/cookie.txt";
-		//$this->cookie 			= 'cl_session=PGgtR7DmT1yOv1tU5fWh8y950wjPmZUee1qTphA4Wut5QiNGvP5kDw3ivIUJyLkE; cl_b=3llV7fiw4xG3hVEpTen2WAAn/Ks'; //'cl_session=swlpIftY9s5tP96gAwVe5thcEZzP1aRsEunxGmfePCoFBEVuQiOXxbmMWWOteOJA; cl_b=3jlt2GKq4xGW70Ald6nfpQ5GkLg',
-		$this->inputEmailHandle = 'frederick.sandalo@ripeconcepts.com';
-		$this->inputPassword	= 'ripe1234';
+
+		$this->cookieFilePath   = $_SERVER['DOCUMENT_ROOT'] . '../cookies';
+		$this->inputEmailHandle = 'landhubtestuser1@gmail.com'; //$configuration['emailAddress'];//'frederick.sandalo@ripeconcepts.com';
+		$this->inputPassword	= 'landhubtestuser$55'; //$configuration['password'];//'ripe1234';
 		$this->chooseTypeId		= 'ho';
 		$this->chooseCategoryId = '143';
 		$this->aPostImages 		= 'add';
