@@ -13,8 +13,6 @@ class Model_Listing extends ORM
 								  );
 		$craigslistHandler = new Model_Listings_CraigsListsHandler($configuration);
 		//$craigslistHandler = ORM::factory('Listings_CraigsListsHandler');
-		var_dump($craigslistHandler);
-		exit('Frederick Sandalo Finalizing Here');
 
 		$craigslistHandler->postToCraigslistPart1($property, $city, $userId, true);
 	}
