@@ -72,8 +72,15 @@ class Controller_Properties extends Lsp_Controller_Template
                 }
 
                 DB::query(null, 'commit')->execute();
-
-                $this->redirect('/properties');
+                HTTP::redirect('/properties/index/', 302);
+                //$this->redirect('/properties');
+                /*
+                $this->redirect($this->request->uri(array('controller' => 'Properties',
+									                	  'action'     => 'index'
+									                	 )
+									               )
+							   );
+				*/
                 exit();
             }
             catch(ORM_Validation_Exception $e)
