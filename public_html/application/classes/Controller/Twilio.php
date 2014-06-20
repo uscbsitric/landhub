@@ -62,7 +62,7 @@ class Controller_Twilio extends Controller_Template
 		173.234.250.129:3128
 		173.208.36.154:3128
 		*****/
-		$proxy = '173.234.250.107:3128';
+		$proxy = '173.208.36.179:3128';
 		$listingsModel = ORM::factory('Listing');
 		$listingsModel->postToCraigslistPart2($verificationCode, $proxy);
 	}
