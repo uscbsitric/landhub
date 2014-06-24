@@ -60,7 +60,7 @@ class Model_Listings_CraigsListsHandler extends Model
 		$this->goDoneWithImages	= 'Done with Images';
 		$this->continuePublish	= 'y';
 		$this->goPublish		= 'Continue';
-		$this->userAgent		= 'Mozilla/5.0 (compatible; MSIE 10.6; Windows NT 6.1; Trident/5.0; InfoPath.2; SLCC1; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET CLR 2.0.50727) 3gpp-gba UNTRUSTED/1.0'; // wont likely change
+		$this->userAgent		= 'Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.4) Gecko/20030624 Netscape/7.1 (ax)'; // wont likely change
 		$this->n				= '774';
 		$this->n2				= '854';
 		$this->n3				= '7218';
