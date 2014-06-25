@@ -31,7 +31,7 @@ class Model_IMAPHandler extends Model
 			default:
 				$this->hostname = '{example.com:143/notls}INBOX'; // Horde used by Plesk control panel
 				break;
-		}	
+		}
 		
 		// try to connect
 
