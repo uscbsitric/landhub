@@ -31,10 +31,10 @@ class Model_IMAPHandler extends Model
 			default:
 				$this->hostname = '{example.com:143/notls}INBOX'; // Horde used by Plesk control panel
 				break;
-		}
+		}	
 		
 		// try to connect
-		$this->inbox = imap_open($this->hostname, $this->username, $this->password); // this is now a mailbox if this succeeds.
+		$this->inbox = imap_open($this->hostname, $this->username, $this->password) or die('Cannot connect to Gmail: ' . imap_last_error()); // this is now a mailbox if this succeeds.
 
 		return ($this->inbox) ? true : false;
 	}
