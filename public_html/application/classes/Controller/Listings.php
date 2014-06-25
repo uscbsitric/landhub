@@ -68,13 +68,13 @@ class Controller_Listings extends Lsp_Controller_Template
 		   173.208.36.143:3128
 		   173.234.250.239:3128
 		   173.234.250.52:3128
-		   173.208.36.223:3128 <---
-		   173.234.250.82:3128
+		   173.208.36.223:3128
+		   173.234.250.82:3128 <---
 		   173.234.250.129:3128
 		   173.208.36.154:3128
 		*****/
 		
-		$proxy = '173.208.36.223:3128';
+		$proxy = '173.234.250.82:3128';
 		$listingsModel->postToCraigslistPart1($postVariables, $this->_user->id, $proxy);
 
 		$this->template->content = View::factory('html/listings/craigslistpost');
