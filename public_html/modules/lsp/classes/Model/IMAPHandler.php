@@ -34,9 +34,10 @@ class Model_IMAPHandler extends Model
 		}	
 		
 		// try to connect
-		$this->inbox = imap_open($this->hostname, $this->username, $this->password) or die('Cannot connect to Gmail: ' . imap_last_error()); // this is now a mailbox if this succeeds.
 
-		return ($this->inbox) ? true : false;
+		$this->inbox = imap_open($this->hostname, $this->username, $this->password) or exit('Cannot connect to Gmail: ' . imap_last_error()); // this is now a mailbox if this succeeds.
+
+		return ($this->inbox) ? true : exit('Cannot connect to Gmail: ' . imap_last_error());
 	}
 
 	
