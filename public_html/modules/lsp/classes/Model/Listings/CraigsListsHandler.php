@@ -44,6 +44,15 @@ class Model_Listings_CraigsListsHandler extends Model
 	private $callLang;
 
 	private $imapHandler;
+	
+	
+	private function UniqueRandomNumbersWithinRange($min, $max, $quantity)
+	{
+		$numbers = range($min, $max);
+		shuffle($numbers);
+	
+		return array_slice($numbers, 0, $quantity);
+	}
 
 
 	public function __construct($configuration)
@@ -329,137 +338,152 @@ class Model_Listings_CraigsListsHandler extends Model
 
 	public function loginStepAssembler($proxy)
 	{
+		sleep(2);
 		$loginStepConfiguration = array('login' => array('configuration' => array('CURLOPT_URL' => 'https://accounts.craigslist.org/login?LoginType=L&step=confirmation&originalURI=%2Flogin&rt=&rp=&inputEmailHandle='.$this->inputEmailHandle.'&inputPassword='.$this->inputPassword.'&submit=Log%20In',
-				'CURLOPT_RETURNTRANSFER' => 1,
-				'CURLOPT_COOKIEJAR'  	=> $this->cookieFilePath,
-				'CURLOPT_COOKIEFILE' 	=> $this->cookieFilePath,
-				'CURLOPT_REFERER'    	=> 'http://www.craigslist.org',
-				'CURLOPT_USERAGENT'  	=> $this->userAgent,
-				'CURLOPT_FOLLOWLOCATION' => true,
-				'CURLOPT_SSL_VERIFYHOST' => false,
-				'CURLOPT_SSL_VERIFYPEER' => false,
-				'CURLOPT_PROXY'			=> $proxy,
-				'formatURL'			    => false
-		),
-				'postVars'		 => array()
-		)
-		);
+																				  'CURLOPT_RETURNTRANSFER' => 1,
+																				  'CURLOPT_COOKIEJAR'  	=> $this->cookieFilePath,
+																				  'CURLOPT_COOKIEFILE' 	=> $this->cookieFilePath,
+																				  'CURLOPT_REFERER'    	=> 'http://www.craigslist.org',
+																				  'CURLOPT_USERAGENT'  	=> $this->userAgent,
+																				  'CURLOPT_FOLLOWLOCATION' => true,
+																				  'CURLOPT_SSL_VERIFYHOST' => false,
+																				  'CURLOPT_SSL_VERIFYPEER' => false,
+																				  'CURLOPT_PROXY'			=> $proxy,
+																				  'formatURL'			    => false
+																				 ),
+														 'postVars'		 => array()
+														)
+									   );
+
 		return $loginStepConfiguration['login'];
 	}
 
 
 	public function selectLocationAssembler($areaabb, $proxy)
 	{
+		sleep(2);
 		$selectLocationConfiguration = array('selectLocation' => array('configuration' => array('CURLOPT_URL' 	   	     => 'https://post.craigslist.org/c/' . $areaabb,  //'https://accounts.craigslist.org/login/pstrdr?areaabb='.$areaabb.'',
-				'CURLOPT_RETURNTRANSFER' => 1,
-				'CURLOPT_COOKIEJAR'  	 => $this->cookieFilePath,
-				'CURLOPT_COOKIEFILE' 	 => $this->cookieFilePath,
-				'CURLOPT_REFERER'    	 => 'https://accounts.craigslist.org/login', //'http://accounts.craigslist.org',
-				'CURLOPT_USERAGENT'  	 => $this->userAgent,
-				'CURLOPT_POST'		     => false,
-				'CURLOPT_FOLLOWLOCATION' => true,
-				'CURLOPT_SSL_VERIFYHOST' => false,
-				'CURLOPT_SSL_VERIFYPEER' => false,
-				'CURLOPT_PROXY'			 => $proxy,
-				'formatURL'			     => false
-		),
-				'postVars'		 => array('areaabb' => $areaabb)
-		)
-		);
+																								'CURLOPT_RETURNTRANSFER' => 1,
+																								'CURLOPT_COOKIEJAR'  	 => $this->cookieFilePath,
+																								'CURLOPT_COOKIEFILE' 	 => $this->cookieFilePath,
+																								'CURLOPT_REFERER'    	 => 'https://accounts.craigslist.org/login', //'http://accounts.craigslist.org',
+																								'CURLOPT_USERAGENT'  	 => $this->userAgent,
+																								'CURLOPT_POST'		     => false,
+																								'CURLOPT_FOLLOWLOCATION' => true,
+																								'CURLOPT_SSL_VERIFYHOST' => false,
+																								'CURLOPT_SSL_VERIFYPEER' => false,
+																								'CURLOPT_PROXY'			 => $proxy,
+																								'formatURL'			     => false
+																								),
+																		'postVars'	   => array('areaabb' => $areaabb)
+																	  )
+											);
+
 		return $selectLocationConfiguration['selectLocation'];
 	}
 
 
 	public function chooseTypeAssembler($proxy)
 	{
+		sleep(2);
 		$chooseTypeConfiguration = array('chooseType' => array('configuration' => array('CURLOPT_URL' 	   	     => 'https://post.craigslist.org/k/%s/%s',
-				'CURLOPT_RETURNTRANSFER' => 1,
-				'CURLOPT_COOKIEJAR'  	 => $this->cookieFilePath,
-				'CURLOPT_COOKIEFILE' 	 => $this->cookieFilePath,
-				'CURLOPT_REFERER'    	 => 'https://accounts.craigslist.org/k/%s/%s?s=type',
-				'CURLOPT_USERAGENT'  	 => $this->userAgent,
-				'CURLOPT_POST'		     => true,
-				'CURLOPT_FOLLOWLOCATION' => true,
-				'CURLOPT_SSL_VERIFYHOST' => false,
-				'CURLOPT_SSL_VERIFYPEER' => false,
-				'CURLOPT_PROXY'			 => $proxy,
-				'formatURL'			     => true,
-				'formatReferer'		     => true
-		),
-				'postVars'	  => array('id' => $this->chooseTypeId)
-		)
-		);
+																						'CURLOPT_RETURNTRANSFER' => 1,
+																						'CURLOPT_COOKIEJAR'  	 => $this->cookieFilePath,
+																						'CURLOPT_COOKIEFILE' 	 => $this->cookieFilePath,
+																						'CURLOPT_REFERER'    	 => 'https://accounts.craigslist.org/k/%s/%s?s=type',
+																						'CURLOPT_USERAGENT'  	 => $this->userAgent,
+																						'CURLOPT_POST'		     => true,
+																						'CURLOPT_FOLLOWLOCATION' => true,
+																						'CURLOPT_SSL_VERIFYHOST' => false,
+																						'CURLOPT_SSL_VERIFYPEER' => false,
+																						'CURLOPT_PROXY'			 => $proxy,
+																						'formatURL'			     => true,
+																						'formatReferer'		     => true
+																					   ),
+															    'postVars'	   => array('id' => $this->chooseTypeId)
+															  )
+										);
+
 		return $chooseTypeConfiguration['chooseType'];
 	}
 
 
 	public function chooseCategoryAssembler($proxy)
 	{
+		sleep(2);
 		$chooseCategory = array('chooseCategory' => array('configuration' => array('CURLOPT_URL' 	   	    => 'https://post.craigslist.org/k/%s/%s',
-				'CURLOPT_RETURNTRANSFER' => 1,
-				'CURLOPT_COOKIEJAR'  	=> $this->cookieFilePath,
-				'CURLOPT_COOKIEFILE' 	=> $this->cookieFilePath,
-				'CURLOPT_REFERER'    	=> 'https://accounts.craigslist.org/k/%s/%s?s=hcat',
-				'CURLOPT_USERAGENT'  	=> $this->userAgent,
-				'CURLOPT_POST'		    => true,
-				'CURLOPT_FOLLOWLOCATION' => true,
-				'CURLOPT_SSL_VERIFYHOST' => false,
-				'CURLOPT_SSL_VERIFYPEER' => false,
-				'CURLOPT_PROXY'			=> $proxy,
-				'formatURL'			    => true,
-				'formatReferer'		    => true
-		),
-				'postVars'		 => array('id' => $this->chooseCategoryId)
-		)
-		);
+																				   'CURLOPT_RETURNTRANSFER' => 1,
+																				   'CURLOPT_COOKIEJAR'  	=> $this->cookieFilePath,
+																				   'CURLOPT_COOKIEFILE' 	=> $this->cookieFilePath,
+																				   'CURLOPT_REFERER'    	=> 'https://accounts.craigslist.org/k/%s/%s?s=hcat',
+																				   'CURLOPT_USERAGENT'  	=> $this->userAgent,
+																				   'CURLOPT_POST'		    => true,
+																				   'CURLOPT_FOLLOWLOCATION' => true,
+																				   'CURLOPT_SSL_VERIFYHOST' => false,
+																				   'CURLOPT_SSL_VERIFYPEER' => false,
+																				   'CURLOPT_PROXY'			=> $proxy,
+																				   'formatURL'			    => true,
+																				   'formatReferer'		    => true
+																				  ),
+														  'postVars'	 => array('id' => $this->chooseCategoryId)
+														)
+							   );
+
 		return $chooseCategory['chooseCategory'];
 	}
 
 
 	public function postPropertyAssembler($property, $city, $proxy)
 	{
+		sleep(30);
 		//echo "<pre>";
 		//var_dump($property->user->name . '---' . $property->user->id);
 		//exit('programmma');
 		$postProperty = array('postProperty' => array('configuration' => array('CURLOPT_URL' 	   	    => 'https://post.craigslist.org/k/%s/%s',
-				'CURLOPT_RETURNTRANSFER' => 1,
-				'CURLOPT_COOKIEJAR'      => $this->cookieFilePath,
-				'CURLOPT_COOKIEFILE'     => $this->cookieFilePath,
-				'CURLOPT_REFERER'        => 'https://accounts.craigslist.org/k/%s/%s?s=edit',
-				'CURLOPT_USERAGENT'      => $this->userAgent,
-				'CURLOPT_POST'		    => true,
-				'CURLOPT_FOLLOWLOCATION' => true,
-				'CURLOPT_SSL_VERIFYHOST' => false,
-				'CURLOPT_SSL_VERIFYPEER' => false,
-				'CURLOPT_PROXY'			=> $proxy,
-				'formatURL'			    => true,
-				'formatReferer'		    => true
-		),
-				'postVars'	  => array('FromEMail' 		 => $property->user->email_craigslist,
-						'ConfirmEMail'	 => $property->user->email_craigslist,
-						'Privacy' 		 => 'C',
-						'contact_phone_ok'=> 1,
-						'contact_text_ok' => 1,
-						'contact_phone'	 => $property->user->phone,
-						'contact_name'	 => $property->user->name,
-						'PostingTitle'	 => $property->price . ' / ' . $property->beds . ' - ' . $property->sqft . ' - ' . $property->title . ' (' . $city->name . ' )',
-						'GeographicArea'	 => '',		//40 characters only
-						'postal'			 => $property->zip_code,	//15 characters only
-						'PostingBody'	 => $property->description,
-						'Sqft'			 => $property->sqft,	//6 characters only
-						'Ask'			 => $property->price,//11 characters only
-						'Bedrooms'		 => $property->beds,	//1-8
-						'bathrooms'		 => $property->baths,	//1-19
-						'housing_type'	 => 12,
-						'laundry'		 => 0,
-						'parking'		 => 0,
-						'wheelaccess'	 => 1,
-						'no_smoking'		 => 1,
-						'is_furnished'	 => 1,
-						'outsideContactOK'=> 1,
-				)
-		)
-		);
+																			   'CURLOPT_RETURNTRANSFER' => 1,
+																			   'CURLOPT_COOKIEJAR'      => $this->cookieFilePath,
+																			   'CURLOPT_COOKIEFILE'     => $this->cookieFilePath,
+																			   'CURLOPT_REFERER'        => 'https://accounts.craigslist.org/k/%s/%s?s=edit',
+																			   'CURLOPT_USERAGENT'      => $this->userAgent,
+																			   'CURLOPT_POST'		    => true,
+																			   'CURLOPT_FOLLOWLOCATION' => true,
+																			   'CURLOPT_SSL_VERIFYHOST' => false,
+																			   'CURLOPT_SSL_VERIFYPEER' => false,
+																			   'CURLOPT_PROXY'			=> $proxy,
+																			   'formatURL'			    => true,
+																			   'formatReferer'		    => true
+																			  ),
+													  'postVars'	 => array('FromEMail' 		 => $property->user->email_craigslist,
+																		   	  'ConfirmEMail'	 => $property->user->email_craigslist,
+																		   	  'Privacy' 		 => 'C',
+																			  'contact_phone_ok' => 1,
+																			  'contact_text_ok'  => 1,
+																			  'contact_phone'	 => $property->user->phone,
+																			  'contact_name'	 => $property->user->name,
+																			  'PostingTitle'	 => $property->price . ' / ' . $property->beds . ' - ' . $property->sqft . ' - ' . $property->title . ' (' . $city->name . ' )',
+																			  'GeographicArea'	 => $property->county,		//40 characters only
+																			  'postal'			 => $property->zip_code,	//15 characters only
+																			  'PostingBody'	 	 => $property->description,
+																			  'Sqft'			 => $property->sqft,	//6 characters only
+																			  'Ask'			 	 => $property->price,//11 characters only
+																			  'moveinMonth'		 => $this->UniqueRandomNumbersWithinRange(1, 12, 1), // hardcoded for now
+																			  'moveinDay'		 => $this->UniqueRandomNumbersWithinRange(1, 30, 1), // hardcoded for now
+																			  'Bedrooms'		 => $property->beds,	//1-8
+																			  'bathrooms'		 => $property->baths,	//1-19
+																			  'housing_type'	 => 12,
+																			  'sale_date_1'		 => '',
+																			  'sale_date_2'		 => '',
+																			  'sale_date_3'		 => '',
+																			  'laundry'		 	 => 0,
+																			  'parking'		 	 => 0,
+																			  'wheelaccess'	 	 => 1,
+																			  'no_smoking'		 => 1,
+																			  'is_furnished'	 => 1,
+																			  'wantamap'		 => 0,
+																			  'contact_ok' 		 => 1,
+																			)
+													)
+							 );
 		return $postProperty['postProperty'];
 	}
 
@@ -467,27 +491,28 @@ class Model_Listings_CraigsListsHandler extends Model
 	public function postImageAssembler($photo, $proxy)
 	{
 		$postImage = array('postImage' => array('configuration'	=> array('CURLOPT_URL' 			  => 'https://post.craigslist.org/k/%s/%s',
-				'CURLOPT_RETURNTRANSFER' => 1,
-				'CURLOPT_COOKIEJAR'  	  => $this->cookieFilePath,
-				'CURLOPT_COOKIEFILE' 	  => $this->cookieFilePath,
-				'CURLOPT_COOKIE' 		  => $this->cookie,
-				'CURLOPT_REFERER'    	  => 'https://accounts.craigslist.org/k/%s/%s?s=editimage',
-				'CURLOPT_USERAGENT'  	  => $this->userAgent,
-				'CURLOPT_POST'		   	  => true,
-				'CURLOPT_FOLLOWLOCATION' => true,
-				'CURLOPT_SSL_VERIFYHOST' => false,
-				'CURLOPT_SSL_VERIFYPEER' => false,
-				'CURLOPT_PROXY'		  => $proxy,
-				'formatURL'			  => true,
-				'formatReferer'		  => true
-		),
-				'postVars'		=> array('a' 	=> $this->aPostImages,
-						'file' => $photo->url,
-						'go'	=> 'add image',
-						'id2'  => '500x500X500x500X500x500',
-				)
-		)
-		);
+																		 'CURLOPT_RETURNTRANSFER' => 1,
+																		 'CURLOPT_COOKIEJAR'  	  => $this->cookieFilePath,
+																		 'CURLOPT_COOKIEFILE' 	  => $this->cookieFilePath,
+																		 'CURLOPT_COOKIE' 		  => $this->cookie,
+																		 'CURLOPT_REFERER'    	  => 'https://accounts.craigslist.org/k/%s/%s?s=editimage',
+																		 'CURLOPT_USERAGENT'  	  => $this->userAgent,
+																		 'CURLOPT_POST'		   	  => true,
+																		 'CURLOPT_FOLLOWLOCATION' => true,
+																		 'CURLOPT_SSL_VERIFYHOST' => false,
+																		 'CURLOPT_SSL_VERIFYPEER' => false,
+																		 'CURLOPT_PROXY'		  => $proxy,
+																		 'formatURL'			  => true,
+																		 'formatReferer'		  => true
+																		),
+												 'postVars'		=> array('a' 	=> $this->aPostImages,
+																		 'file' => $photo->url,
+																		 'go'	=> 'add image',
+																		 'id2'  => '500x500X500x500X500x500',
+																		)
+												)
+						 );
+
 		return $postImage['postImage'];
 	}
 
@@ -495,24 +520,25 @@ class Model_Listings_CraigsListsHandler extends Model
 	public function doneWithImagesAssembler($proxy)
 	{
 		$doneWithImages = array('doneWithImages' => array('configuration' => array('CURLOPT_URL' 			=> 'https://post.craigslist.org/k/%s/%s',
-				'CURLOPT_RETURNTRANSFER' => 1,
-				'CURLOPT_COOKIEJAR'  	=> $this->cookieFilePath,
-				'CURLOPT_COOKIEFILE' 	=> $this->cookieFilePath,
-				'CURLOPT_REFERER'    	=> 'https://accounts.craigslist.org/k/%s/%s?s=editimage',
-				'CURLOPT_USERAGENT'  	=> $this->userAgent,
-				'CURLOPT_POST'		    => true,
-				'CURLOPT_FOLLOWLOCATION' => true,
-				'CURLOPT_SSL_VERIFYHOST' => false,
-				'CURLOPT_SSL_VERIFYPEER' => false,
-				'CURLOPT_PROXY'			=> $proxy,
-				'formatURL'			    => true,
-				'formatReferer'		    => true
-		),
-				'postVars'	  => array('a'  => $this->aDoneWithImages,
-						'go' => $this->goDoneWithImages
-				)
-		)
-		);
+																				   'CURLOPT_RETURNTRANSFER' => 1,
+																				   'CURLOPT_COOKIEJAR'  	=> $this->cookieFilePath,
+																				   'CURLOPT_COOKIEFILE' 	=> $this->cookieFilePath,
+																				   'CURLOPT_REFERER'    	=> 'https://accounts.craigslist.org/k/%s/%s?s=editimage',
+																				   'CURLOPT_USERAGENT'  	=> $this->userAgent,
+																				   'CURLOPT_POST'		    => true,
+																				   'CURLOPT_FOLLOWLOCATION' => true,
+																				   'CURLOPT_SSL_VERIFYHOST' => false,
+																				   'CURLOPT_SSL_VERIFYPEER' => false,
+																				   'CURLOPT_PROXY'			=> $proxy,
+																				   'formatURL'			    => true,
+																				   'formatReferer'		    => true
+																				 ),
+														 'postVars'	  => array('a'  => $this->aDoneWithImages,
+																			   'go' => $this->goDoneWithImages
+																			  )
+														)
+							   );
+
 		return $doneWithImages['doneWithImages'];
 	}
 
@@ -520,24 +546,25 @@ class Model_Listings_CraigsListsHandler extends Model
 	public function publishAssembler($proxy)
 	{
 		$publish = array('publish'	=> array('configuration' => array('CURLOPT_URL' 		  => 'https://post.craigslist.org/k/%s/%s',
-				'CURLOPT_RETURNTRANSFER'=> 1,
-				'CURLOPT_COOKIEJAR'  	  => $this->cookieFilePath,
-				'CURLOPT_COOKIEFILE' 	  => $this->cookieFilePath,
-				'CURLOPT_REFERER'    	  => 'https://post.craigslist.org/k/%s/%s?s=preview',
-				'CURLOPT_USERAGENT'  	  => $this->userAgent,
-				'CURLOPT_POST'		  => true,
-				'CURLOPT_FOLLOWLOCATION'=> true,
-				'CURLOPT_SSL_VERIFYHOST'=> false,
-				'CURLOPT_SSL_VERIFYPEER'=> false,
-				'CURLOPT_PROXY'		  => $proxy,
-				'formatURL'			  => true,
-				'formatReferer'		  => true
-		),
-				'postVars'		 => array('continue' => $this->continuePublish,
-						'go'		 => $this->goPublish
-				)
-		)
+																	'CURLOPT_RETURNTRANSFER'  => 1,
+																	'CURLOPT_COOKIEJAR'  	  => $this->cookieFilePath,
+																	'CURLOPT_COOKIEFILE' 	  => $this->cookieFilePath,
+																	'CURLOPT_REFERER'    	  => 'https://post.craigslist.org/k/%s/%s?s=preview',
+																	'CURLOPT_USERAGENT'  	  => $this->userAgent,
+																	'CURLOPT_POST'		  	  => true,
+																	'CURLOPT_FOLLOWLOCATION'  => true,
+																	'CURLOPT_SSL_VERIFYHOST'  => false,
+																	'CURLOPT_SSL_VERIFYPEER'  => false,
+																	'CURLOPT_PROXY'		  	  => $proxy,
+																	'formatURL'			  	  => true,
+																	'formatReferer'		  	  => true
+															),
+											 'postVars'	    => array('continue' => $this->continuePublish,
+																	 'go'		=> $this->goPublish,
+																	)
+										    )
 		);
+
 		return $publish['publish'];
 	}
 
@@ -547,21 +574,21 @@ class Model_Listings_CraigsListsHandler extends Model
 		$url = $this->imapHandler->getCraigslistPostingURL();
 
 		$emailVerify = array('emailVerify'	=> array('configuration' 	=> array('CURLOPT_URL' 	   	   	  => $url,
-				'CURLOPT_RETURNTRANSFER' => 1,
-				'CURLOPT_COOKIEJAR'  	  => $this->cookieFilePath,
-				'CURLOPT_COOKIEFILE' 	  => $this->cookieFilePath,
-				'CURLOPT_USERAGENT'  	  => $this->userAgent,
-				'CURLOPT_POST'		      => false,
-				'CURLOPT_FOLLOWLOCATION' => true,
-				'CURLOPT_SSL_VERIFYHOST' => false,
-				'CURLOPT_SSL_VERIFYPEER' => false,
-				'CURLOPT_PROXY'		  => $proxy,
-				'formatURL'			  => false,
-				'formatReferer'		  => false
-		),
-				'postVars'			=> array()
-		)
-		);
+																				 'CURLOPT_RETURNTRANSFER' => 1,
+																				 'CURLOPT_COOKIEJAR'  	  => $this->cookieFilePath,
+																				 'CURLOPT_COOKIEFILE' 	  => $this->cookieFilePath,
+																				 'CURLOPT_USERAGENT'  	  => $this->userAgent,
+																				 'CURLOPT_POST'		      => false,
+																				 'CURLOPT_FOLLOWLOCATION' => true,
+																				 'CURLOPT_SSL_VERIFYHOST' => false,
+																				 'CURLOPT_SSL_VERIFYPEER' => false,
+																				 'CURLOPT_PROXY'		  => $proxy,
+																				 'formatURL'			  => false,
+																				 'formatReferer'		  => false
+																				),
+													 'postVars'			=> array()
+													)
+							);
 
 		return $emailVerify['emailVerify'];
 	}
@@ -570,21 +597,21 @@ class Model_Listings_CraigsListsHandler extends Model
 	public function createPostingAssembler($proxy)
 	{
 		$createPosting = array('createPosting' => array('configuration' => array('CURLOPT_URL' 			  => 'https://post.craigslist.org/k/%s/%s',
-				'CURLOPT_RETURNTRANSFER' => 1,
-				'CURLOPT_COOKIEJAR'  	  => $this->cookieFilePath,
-				'CURLOPT_COOKIEFILE' 	  => $this->cookieFilePath,
-				'CURLOPT_USERAGENT'  	  => $this->userAgent,
-				'CURLOPT_POST'		      => true,
-				'CURLOPT_FOLLOWLOCATION' => true,
-				'CURLOPT_SSL_VERIFYHOST' => false,
-				'CURLOPT_SSL_VERIFYPEER' => false,
-				'CURLOPT_PROXY'		  => $proxy,
-				'formatURL'			  => true,
-				'formatReferer'		  => false
-		),
-				'postVars'	   => array('continue' => 'y')
-		)
-		);
+																				 'CURLOPT_RETURNTRANSFER' => 1,
+																				 'CURLOPT_COOKIEJAR'  	  => $this->cookieFilePath,
+																				 'CURLOPT_COOKIEFILE' 	  => $this->cookieFilePath,
+																				 'CURLOPT_USERAGENT'  	  => $this->userAgent,
+																				 'CURLOPT_POST'		      => true,
+																				 'CURLOPT_FOLLOWLOCATION' => true,
+																				 'CURLOPT_SSL_VERIFYHOST' => false,
+																				 'CURLOPT_SSL_VERIFYPEER' => false,
+																				 'CURLOPT_PROXY'		  => $proxy,
+																				 'formatURL'			  => true,
+																				 'formatReferer'		  => false
+																			    ),
+														'postVars'	   => array('continue' => 'y')
+														)
+							 );
 
 		return $createPosting['createPosting'];
 	}
@@ -593,28 +620,29 @@ class Model_Listings_CraigsListsHandler extends Model
 	public function phoneVerifyAssembler($proxy)
 	{
 		$phoneVerify = array('phoneVerify' => array('configuration' => array('CURLOPT_URL' 		  	 => 'https://post.craigslist.org/k/%s/%s',
-				'CURLOPT_RETURNTRANSFER'=> 1,
-				'CURLOPT_COOKIEJAR'  	 => $this->cookieFilePath,
-				'CURLOPT_COOKIEFILE' 	 => $this->cookieFilePath,
-				'CURLOPT_REFERER'    	 => 'https://post.craigslist.org/k/%s/%s?s=pn',
-				'CURLOPT_USERAGENT'  	 => $this->userAgent,
-				'CURLOPT_POST'		  	 => true,
-				'CURLOPT_FOLLOWLOCATION'=> true,
-				'CURLOPT_SSL_VERIFYHOST'=> false,
-				'CURLOPT_SSL_VERIFYPEER'=> false,
-				'CURLOPT_PROXY'		 => $proxy,
-				'formatURL'			 => true,
-				'formatReferer'		 => true
-		),
-				'postVars'		=> array('n'  		=> $this->n,
-						'n2' 		=> $this->n2,
-						'n3' 		=> $this->n3,
-						'callType' => $this->callType,
-						'callLang' => $this->callLang,
-						'go'		=> 'send the code!'
-				)
-		)
-		);
+																			 'CURLOPT_RETURNTRANSFER'=> 1,
+																			 'CURLOPT_COOKIEJAR'  	 => $this->cookieFilePath,
+																			 'CURLOPT_COOKIEFILE' 	 => $this->cookieFilePath,
+																			 'CURLOPT_REFERER'    	 => 'https://post.craigslist.org/k/%s/%s?s=pn',
+																			 'CURLOPT_USERAGENT'  	 => $this->userAgent,
+																			 'CURLOPT_POST'		  	 => true,
+																			 'CURLOPT_FOLLOWLOCATION'=> true,
+																			 'CURLOPT_SSL_VERIFYHOST'=> false,
+																			 'CURLOPT_SSL_VERIFYPEER'=> false,
+																			 'CURLOPT_PROXY'		 => $proxy,
+																			 'formatURL'			 => true,
+																			 'formatReferer'		 => true
+																			),
+													'postVars'		=> array('n'  		=> $this->n,
+																			 'n2' 		=> $this->n2,
+																			 'n3' 		=> $this->n3,
+																			 'callType' => $this->callType,
+																			 'callLang' => $this->callLang,
+																			 'go'		=> 'send the code!'
+																			)
+												   )
+							);
+
 		return $phoneVerify['phoneVerify'];
 	}
 
@@ -632,28 +660,29 @@ class Model_Listings_CraigsListsHandler extends Model
 		}
 
 		$postVerificationCodeAssembler = array('postVerificationCodeAssembler' => array('configuration' => array('CURLOPT_URL' 		  	  => $urlToPost,
-				'CURLOPT_RETURNTRANSFER' => 1,
-				'CURLOPT_COOKIEJAR'  	  => $this->cookieFilePath,
-				'CURLOPT_COOKIEFILE' 	  => $this->cookieFilePath,
-				'CURLOPT_REFERER'    	  => 'https://post.craigslist.org/k/%s/%s?s=pc',
-				'CURLOPT_USERAGENT'  	  => $this->userAgent,
-				'CURLOPT_POST'		  	  => true,
-				'CURLOPT_FOLLOWLOCATION' => true,
-				'CURLOPT_SSL_VERIFYHOST' => false,
-				'CURLOPT_SSL_VERIFYPEER' => false,
-				'CURLOPT_PROXY'		  => $proxy,
-				'formatURL'			  => false,
-				'formatReferer'		  => true
-		),
-				'postVars'		=> array('random22'			=> $random22,
-						'random5'			=> $random5,
-						'cryptedStepCheck' => $cryptedStepCheck,
-						'authstep'			=> $this->authstep,
-						'userCode'			=> $verificationCode,
-						'go'				=> $this->goSubmitVerCode
-				)
-		)
-		);
+																												 'CURLOPT_RETURNTRANSFER' => 1,
+																												 'CURLOPT_COOKIEJAR'  	  => $this->cookieFilePath,
+																												 'CURLOPT_COOKIEFILE' 	  => $this->cookieFilePath,
+																												 'CURLOPT_REFERER'    	  => 'https://post.craigslist.org/k/%s/%s?s=pc',
+																												 'CURLOPT_USERAGENT'  	  => $this->userAgent,
+																												 'CURLOPT_POST'		  	  => true,
+																												 'CURLOPT_FOLLOWLOCATION' => true,
+																												 'CURLOPT_SSL_VERIFYHOST' => false,
+																												 'CURLOPT_SSL_VERIFYPEER' => false,
+																												 'CURLOPT_PROXY'		  => $proxy,
+																												 'formatURL'			  => false,
+																												 'formatReferer'		  => true
+																												),
+																						 'postVars'		=> array('random22'			=> $random22,
+																												 'random5'			=> $random5,
+																												 'cryptedStepCheck' => $cryptedStepCheck,
+																												 'authstep'			=> $this->authstep,
+																												 'userCode'			=> $verificationCode,
+																												 'go'				=> $this->goSubmitVerCode
+																												)
+																					   )
+											 );
+
 		return $postVerificationCodeAssembler['postVerificationCodeAssembler'];
 	}
 
