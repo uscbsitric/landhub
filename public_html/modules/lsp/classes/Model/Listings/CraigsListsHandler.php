@@ -93,7 +93,7 @@ class Model_Listings_CraigsListsHandler extends Model
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 
 
-		curl_setopt($ch, CURLOPT_PROXY, $configuration['CURLOPT_PROXY']);
+		//curl_setopt($ch, CURLOPT_PROXY, $configuration['CURLOPT_PROXY']);
 
 		if(isset($configuration['CURLOPT_POST']) && true == $configuration['CURLOPT_POST'])
 		{
