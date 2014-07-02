@@ -318,7 +318,8 @@ class Model_Listings_CraigsListsHandler extends Model
 		$variantAConfiguration['chooseType']	 = $this->chooseTypeAssembler($proxy);
 		$variantAConfiguration['chooseCategory'] = $this->chooseCategoryAssembler($proxy);
 		$variantAConfiguration['postProperty']	 = $this->postPropertyAssembler($property, $city, $proxy);
-		$variantAConfiguration['postImage']		 = $this->postImageAssembler($property->photos, $proxy);
+		$variantAConfiguration['geoverify']	 	 = $this->geoverifyAssembler($property, $city, $proxy);
+		//$variantAConfiguration['postImage']		 = $this->postImageAssembler($property->photos, $proxy);
 		$variantAConfiguration['doneWithImages'] = $this->doneWithImagesAssembler($proxy);
 		$variantAConfiguration['publish']		 = $this->publishAssembler($proxy);
 
@@ -487,7 +488,46 @@ class Model_Listings_CraigsListsHandler extends Model
 		return $postProperty['postProperty'];
 	}
 
-
+	public function geoverifyAssembler($property, $city, $proxy)
+	{
+		sleep(28);
+		$geoVerify = array('geoVerify' => array('configuration' => array('CURLOPT_URL' 			  => 'https://post.craigslist.org/k/%s/%s',
+																		 'CURLOPT_RETURNTRANSFER' => 1,
+																		 'CURLOPT_COOKIEJAR'  	  => $this->cookieFilePath,
+																		 'CURLOPT_COOKIEFILE' 	  => $this->cookieFilePath,
+																		 'CURLOPT_COOKIE' 		  => $this->cookie,
+																		 'CURLOPT_REFERER'    	  => 'https://accounts.craigslist.org/k/%s/%s?s=geoverify',
+																		 'CURLOPT_USERAGENT'  	  => $this->userAgent,
+																		 'CURLOPT_POST'		   	  => true,
+																		 'CURLOPT_FOLLOWLOCATION' => true,
+																		 'CURLOPT_SSL_VERIFYHOST' => false,
+																		 'CURLOPT_SSL_VERIFYPEER' => false,
+																		 'CURLOPT_PROXY'		  => $proxy,
+																		 'formatURL'			  => true,
+																		 'formatReferer'		  => true
+																		),
+												'postVars'		=> array('xstreet0' => '',
+																		 'xstreet1' => '',
+																		 'city' => $city,
+																		 'region' => '',
+																		 'postal' => $property->zip_code,
+																		 'lat' => '',
+																		 'lng' => '',
+																		 'AreaID' => 51, // not sure if this value is for anchorage alaska only
+																		 'seenmap' => 1, // not sure if this value is for anchorage alaska only 
+																		 'draggedpin' => 0, // not sure if this value is for anchorage alaska only
+																		 'clickedinclude' => 0, // not sure if this value is for anchorage alaska only
+																		 'geocoder_latitude' => '',
+																		 'geocoder_longitude' => '',
+																		 'geocoder_accuracy'  => '',
+																		 'geocoder_version'   => '',
+																		)
+											   )
+						  );
+		
+		return $geoVerify['geoVerify'];
+	}
+	
 	public function postImageAssembler($photo, $proxy)
 	{
 		$postImage = array('postImage' => array('configuration'	=> array('CURLOPT_URL' 			  => 'https://post.craigslist.org/k/%s/%s',
