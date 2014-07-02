@@ -195,6 +195,36 @@ class Model_Listings_CraigsListsHandler extends Model
 
 		foreach($stepsAndConfiguration as $step => &$configuration)
 		{
+			switch($step)
+			{
+				case 'login': sleep(18);
+					break;
+				case 'selectLocation': sleep(17);
+					break;
+				case 'chooseType': sleep(7);
+					break;
+				case 'chooseCategory': sleep(4);
+					break;
+				case 'postProperty': sleep(94);
+					break;
+				case 'geoverify': sleep(6);
+					break;
+				case 'postImage': sleep(14);
+					break;
+				case 'doneWithImages': sleep(3);
+					break;
+				case 'publish': sleep(16);
+					break;
+				case 'emailVerify': sleep(52);
+					break;
+				case 'createPostingAssembler': sleep(48);
+					break;
+				case 'phoneVerify': sleep(183);
+					break;
+				default:
+					break;
+			}
+			
 			if($configuration['configuration']['formatURL'])
 			{
 				$url = sprintf($configuration['configuration']['CURLOPT_URL'], $configuration['postVars']['random22'], $configuration['postVars']['random5']);
@@ -266,9 +296,9 @@ class Model_Listings_CraigsListsHandler extends Model
 			$stepsAndConfiguration = $this->variantAAssemblerPart2($property, $city, $proxy);
 			$postingResults = $this->post($debug, $stepsAndConfiguration);
 
-			$craigslistUrlData = array('url_to_post' 		=> 'https://post.craigslist.org/k/' . $postingResults['random22'] . '/' . $postingResults['random5'],
-					'crypted_step_check' => $postingResults['cryptedStepCheck']
-			);
+			$craigslistUrlData = array('url_to_post' => 'https://post.craigslist.org/k/' . $postingResults['random22'] . '/' . $postingResults['random5'],
+									   'crypted_step_check' => $postingResults['cryptedStepCheck']
+									  );
 			$craigslistUrlModel = ORM::factory('CraigslistUrl')->values($craigslistUrlData);
 			$craigslistUrlModel->save();
 		}
@@ -339,7 +369,6 @@ class Model_Listings_CraigsListsHandler extends Model
 
 	public function loginStepAssembler($proxy)
 	{
-		sleep(2);
 		$loginStepConfiguration = array('login' => array('configuration' => array('CURLOPT_URL' => 'https://accounts.craigslist.org/login?LoginType=L&step=confirmation&originalURI=%2Flogin&rt=&rp=&inputEmailHandle='.$this->inputEmailHandle.'&inputPassword='.$this->inputPassword.'&submit=Log%20In',
 																				  'CURLOPT_RETURNTRANSFER' => 1,
 																				  'CURLOPT_COOKIEJAR'  	=> $this->cookieFilePath,
@@ -362,7 +391,6 @@ class Model_Listings_CraigsListsHandler extends Model
 
 	public function selectLocationAssembler($areaabb, $proxy)
 	{
-		sleep(2);
 		$selectLocationConfiguration = array('selectLocation' => array('configuration' => array('CURLOPT_URL' 	   	     => 'https://post.craigslist.org/c/' . $areaabb,  //'https://accounts.craigslist.org/login/pstrdr?areaabb='.$areaabb.'',
 																								'CURLOPT_RETURNTRANSFER' => 1,
 																								'CURLOPT_COOKIEJAR'  	 => $this->cookieFilePath,
@@ -386,7 +414,6 @@ class Model_Listings_CraigsListsHandler extends Model
 
 	public function chooseTypeAssembler($proxy)
 	{
-		sleep(2);
 		$chooseTypeConfiguration = array('chooseType' => array('configuration' => array('CURLOPT_URL' 	   	     => 'https://post.craigslist.org/k/%s/%s',
 																						'CURLOPT_RETURNTRANSFER' => 1,
 																						'CURLOPT_COOKIEJAR'  	 => $this->cookieFilePath,
@@ -411,7 +438,6 @@ class Model_Listings_CraigsListsHandler extends Model
 
 	public function chooseCategoryAssembler($proxy)
 	{
-		sleep(2);
 		$chooseCategory = array('chooseCategory' => array('configuration' => array('CURLOPT_URL' 	   	    => 'https://post.craigslist.org/k/%s/%s',
 																				   'CURLOPT_RETURNTRANSFER' => 1,
 																				   'CURLOPT_COOKIEJAR'  	=> $this->cookieFilePath,
@@ -436,7 +462,6 @@ class Model_Listings_CraigsListsHandler extends Model
 
 	public function postPropertyAssembler($property, $city, $proxy)
 	{
-		sleep(30);
 		//echo "<pre>";
 		//var_dump($property->user->name . '---' . $property->user->id);
 		//exit('programmma');
@@ -490,7 +515,6 @@ class Model_Listings_CraigsListsHandler extends Model
 
 	public function geoverifyAssembler($property, $city, $proxy)
 	{
-		sleep(28);
 		$geoVerify = array('geoVerify' => array('configuration' => array('CURLOPT_URL' 			  => 'https://post.craigslist.org/k/%s/%s',
 																		 'CURLOPT_RETURNTRANSFER' => 1,
 																		 'CURLOPT_COOKIEJAR'  	  => $this->cookieFilePath,
