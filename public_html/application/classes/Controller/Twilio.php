@@ -5,6 +5,64 @@ class Controller_Twilio extends Controller_Template
 {
 	public $template = 'templates/twilio';
 
+	public function extractVerificationCodeVersion1($transcription)
+	{
+		preg_match_all('/\s[0-9]{3,5}\s/', $transcription, $result);
+		$verificationCode = trim($result[0][0], ' ');
+		
+		return $verificationCode;
+	}
+	
+	public function extractVerificationCodeVersion2($transcription)
+	{
+		$explodedTranscription = explode(' ', $transcription);
+		$verificationCode = array();
+
+		foreach($explodedTranscription as $word)
+		{
+			switch($word)
+			{
+				case 'zero':
+					$verificationCode[] = 0;
+					break;
+				case 'one':
+					$verificationCode[] = 1;
+					break;
+				case 'two';
+					$verificationCode[] = 2;
+					break;
+				case 'three':
+					$verificationCode[] = 3;
+					break;
+				case 'four':
+					$verificationCode[] = 4;
+					break;
+				case 'five':
+					$verificationCode[] = 5;
+					break;
+				case 'six':
+					$verificationCode[] = 6;
+					break;
+				case 'seven':
+					$verificationCode[] = 7;
+					break;
+				case 'eight':
+					$verificationCode[] = 8;
+					break;
+				case 'nine':
+					$verificationCode[] = 9;
+					break;
+				default:
+					continue;
+					break;
+			}
+		}
+
+		$verificationCode = array_slice($verificationCode, 0, count($verificationCode)/2 ); // first half would do
+		$verificationCode = implode('', $verificationCode);
+		
+		return $verificationCode;
+	}
 
 	public function action_craigslistland()
 	{
@@ -47,8 +105,9 @@ class Controller_Twilio extends Controller_Template
 		$twilioModel = ORM::factory('Twilio')->values(array('debug_message' => $debugMessage), array('debug_message'));
 		$twilioModel->save();
 		
-		preg_match_all('/\s[0-9]{3,5}\s/', $debugMessage, $result);
-		$verificationCode = trim($result[0][0], ' ');
+		//preg_match_all('/\s[0-9]{3,5}\s/', $debugMessage, $result);
+		//$verificationCode = trim($result[0][0], ' ');
+		$verificationCode = $this->extractVerificationCodeVersion2($debugMessage);
 
 		/***** Proxies
 		 * 173.208.36.19:3128
