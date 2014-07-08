@@ -196,6 +196,7 @@ class Model_Listings_CraigsListsHandler extends Model
 
 		foreach($stepsAndConfiguration as $step => &$configuration)
 		{
+			/*****
 			switch($step)
 			{
 				case 'login': sleep(18);
@@ -225,6 +226,7 @@ class Model_Listings_CraigsListsHandler extends Model
 				default:
 					break;
 			}
+			*****/
 			
 			if($configuration['configuration']['formatURL'])
 			{
