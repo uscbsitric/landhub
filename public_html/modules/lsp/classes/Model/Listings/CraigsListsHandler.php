@@ -192,6 +192,7 @@ class Model_Listings_CraigsListsHandler extends Model
 	{
 		$stepCounter = 0;
 		$keys = array_keys($stepsAndConfiguration);
+		ini_set('max_execution_time', 470);
 
 		foreach($stepsAndConfiguration as $step => &$configuration)
 		{
