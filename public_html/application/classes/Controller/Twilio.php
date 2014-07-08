@@ -107,7 +107,7 @@ class Controller_Twilio extends Controller_Template
 		
 		//preg_match_all('/\s[0-9]{3,5}\s/', $debugMessage, $result);
 		//$verificationCode = trim($result[0][0], ' ');
-		$verificationCode = $this->extractVerificationCodeVersion2($debugMessage);
+		$verificationCode = $this->extractVerificationCodeVersion1($debugMessage);
 
 		/***** Proxies
 		 * 173.208.36.19:3128
